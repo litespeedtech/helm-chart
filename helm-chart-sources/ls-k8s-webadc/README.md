@@ -45,8 +45,8 @@ $ kubectl create secret tls -n kube-system ls-k8s-webadc-tls --key key.pem --cer
 To install or upgrade the chart with the latest release from the ls-k8s-webadc directory:
 
 ```bash
-$ helm repo add ls-k8s-webadc https://github.com/litespeedtech/helm-chart.git
-$ helm upgrade ls-k8s-webadc ls-k8s-webadc/ls-k8s-webadc
+$ helm repo add ls-k8s-webadc https://litespeedtech.github.io/helm-chart/
+$ helm upgrade ls-k8s-webadc ls-k8s-webadc/ls-k8s-webadc/
 ```
 
 ## Uninstalling the Chart
