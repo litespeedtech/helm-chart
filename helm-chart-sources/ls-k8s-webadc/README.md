@@ -42,11 +42,11 @@ $ kubectl create secret tls -n kube-system ls-k8s-webadc-tls --key key.pem --cer
 
 ## Installing the Chart
 
-To install or upgrade the chart with the latest release from the ls-k8s-webadc directory:
+To install the chart with the latest release from the ls-k8s-webadc directory:
 
 ```bash
 $ helm repo add ls-k8s-webadc https://litespeedtech.github.io/helm-chart/
-$ helm upgrade ls-k8s-webadc ls-k8s-webadc/ls-k8s-webadc/
+$ helm install ls-k8s-webadc ls-k8s-webadc/ls-k8s-webadc/
 ```
 
 ## Uninstalling the Chart
@@ -286,17 +286,17 @@ The command removes all the Kubernetes components associated with the chart and 
 | `metrics.prometheusRule.rules`            | Rules to be prometheus in YAML format, check values for an example            | `[]`        |
 
 
-Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade`. For example,
+Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
 ```bash
-$ helm upgrade ls-k8s-webadc --set image.pullPolicy=Always helm/ls-k8s-webadc
+$ helm install ls-k8s-webadc --set image.pullPolicy=Always helm/ls-k8s-webadc
 ```
 The above command sets the `image.pullPolicy` to `Always`.
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
 
 ```bash
-$ helm upgrade my-release -f values.yaml helm/ls-k8s-webadc
+$ helm install my-release -f values.yaml helm/ls-k8s-webadc
 ```
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
