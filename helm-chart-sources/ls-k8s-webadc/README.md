@@ -42,10 +42,11 @@ $ kubectl create secret tls -n kube-system ls-k8s-webadc-tls --key key.pem --cer
 
 ## Installing the Chart
 
-To install the chart with the latest release from the ls-k8s-webadc directory:
+To install or upgrade the chart with the latest release from the ls-k8s-webadc directory:
 
 ```bash
-$ helm install ls-k8s-webadc helm/ls-k8s-webadc
+$ helm repo add ls-k8s-webadc https://github.com/litespeedtech/helm-chart.git
+$ helm upgrade ls-k8s-webadc ls-k8s-webadc/ls-k8s-webadc
 ```
 
 ## Uninstalling the Chart
@@ -94,7 +95,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `scope.enabled`               | Limit the scope of the controller. Defaults to `.Release.Namespace`                                                                                | `false`                            |
 | `command`                     | Override default container command (useful when using custom images)                                                                               | `[]`                               |
 | `args`                        | Override default container args (useful when using custom images)                                                                                  | `[]`                               |
-| `extraArgs`                   | Additional command line arguments.  Without leading dashes, comma separated, in quotes.                                                            | `{}`                               |
+| `extraArgs`                   | Additional command line arguments.  Without leading dashes, comma separated, in quotes.  See below for the full list.                              | `{}`                               |
 | `extraEnvVars`                | Extra environment variables to be set on LiteSpeed WebADC Ingress container                                                                        | `[]`                               |
 | `extraEnvVarsSecret`          | Name of a existing Secret containing extra environment variables                                                                                   | `""`                               |
 
@@ -285,17 +286,17 @@ The command removes all the Kubernetes components associated with the chart and 
 | `metrics.prometheusRule.rules`            | Rules to be prometheus in YAML format, check values for an example            | `[]`        |
 
 
-Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
+Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade`. For example,
 
 ```bash
-$ helm install ls-k8s-webadc --set image.pullPolicy=Always helm/ls-k8s-webadc
+$ helm upgrade ls-k8s-webadc --set image.pullPolicy=Always helm/ls-k8s-webadc
 ```
 The above command sets the `image.pullPolicy` to `Always`.
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
 
 ```bash
-$ helm install my-release -f values.yaml helm/ls-k8s-webadc
+$ helm upgrade my-release -f values.yaml helm/ls-k8s-webadc
 ```
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
@@ -346,10 +347,82 @@ As an alternative, you can use of the preset configurations for pod affinity, po
 
 And if necessary you can hard code the node the Deployment schedules a pod to with `nodeName`.
 
+
+LiteSpeed Kubernetes ADC Controller Arguments
+---------------------------------------------
+
+The LiteSpeed Kubernetes ADC Controller arguments are specified in helm with the `extraArgs` list above or if you are creating or modifying your own .yaml files in `spec/template/spec/containers/args`.  In yaml files an initial leading dash is required for repeating parameters and the second double leading dash is required for all controller arguments.  When using helm `extraArgs` do not use leading dashes and comma separate parameters.
+
+| Name | Description | Value |
+| - | - | - |
+| `--allow-internal-ip` | Allows the use address of type NodeInternalIP when fetching the external IP address.  This is the workaround for the cluster configuration where NodeExternalIP or NodeLegacyHostIP is not assigned or cannot be used. | `false` |
+| `--default-tls-secret` | Name of the Secret that contains TLS server certificate and secret key to enable TLS by default.  For those client connections which are not TLS encrypted, they are redirected to https URI permanently. | `kube-system/ls-k8s-webadc.com` |
+| `--deferred-shutdown-period` | How long the controller waits before actually starting shutting down when it receives shutdown signal. Specified as a Kubernetes duration. | `0` (immediate) | 
+| `--endpoint-slices` | Get endpoints from EndpointSlice resource instead of Endpoints resource. | `false` |
+| `--healthz-port` | Port for healthz endpoint.  Can be any open port. | `11972` |
+| `--ingress-class-controller` | The name of IngressClass controller for this controller.  This is the value specified in `IngressClass.spec.controller.` | `litespeedtech.com/lslbd` |
+| `--lslb-debug` | Set to true if you want LSLB tracing enabled on startup. | `false` |
+| `--lslb-dir` | The directory in the Docker image where the LiteSpeed Web ADC is installed, the default of `/usr/local/lslb` is the default ADC directory. | `/usr/local/lslb` |
+| `--lslb-enable-ocsp-stapling` | Enable OCSP stapling on ADC server. | `false` |
+| `--lslb-http-port` | Port to listen to for HTTP (non-TLS) requests.  Specifying 0 disables HTTP port. | `80` |
+| `--lslb-https-port` | Port to listen to for HTTPS (TLS) requests.  Specifying 0 disables HTTPS port. | `443` |
+| `--lslb-license-secret` | The required secret to be used to identify the LS WebADC license file(s). | `kube-system/ls-k8s-webadc` |
+| `--lslb-wait-timeout` | Number of seconds to wait for lslb to start listening for ZeroConf events. | `30` |
+| `--lslb-zeroconf-password` | The password to be used to access zero conf.  The default is `zero` and changing it is documented in [ZeroConf](https://docs.litespeedtech.com/products/lsadc/zeroconf/). | `zero` |
+| `--lslb-zeroconf-port` | The port to be used to access zero conf in LiteSpeed Web ADC. | `7099` |
+| `--lslb-zeroconf-user` | The user to be used to access zero conf.  Changing it is documented in [ZeroConf](https://docs.litespeedtech.com/products/lsadc/zeroconf/). | `zero` |
+| `--profiling` | Enable profiling at the health port.  It exposes /debug/pprof/ endpoint. | `true` |
+| `--publish-service` | Specify namespace/name of Service whose hostnames/IP addresses are set in Ingress resource instead of addresses of Ingress controller Pods.  Takes the form namespace/name. | None |
+| `--reload-burst` | Reload burst that can exceed reload-rate. | `1` |
+| `--reload-rate` | Rate (QPS) of reloading LiteSpeed WebADC configuration to deal with frequent backend updates in a single batch. | `1.0` |
+| `--v` |  Sets info logging.  --v=4 is the most verbose. | `2` |
+| `--watch-namespace` | The namespace to watch for Ingress events. | All namespaces |
+
+
 ## Troubleshooting
 
 Find more information about how to deal with common errors related to Bitnami’s Helm charts in [this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
 
-## Notable changes
+### Getting the Pod Name
 
-See the root level README.md
+To do any troubleshooting you'll need the full name of the pod.  This is obtained by running:
+
+        kubectl get pods -n kube-system -o wide
+
+Note that we recommend running the wide version of the command so that you can see not only the names by the nodes and addresses of the pod.
+
+The name of the LiteSpeed Kubernetes ADC controller pod is ls-k8s-webadc-SUFFIX.  For example: `ls-k8s-webadc-5b6cb78b89-qdhjx`
+
+### Pod Status
+
+Sometimes the problems are described in a simple pod description.  For example:
+
+        kubectl describe pod ls-k8s-webadc-5b6cb78b89-qdhjx >desc.log
+
+You can examine desc.log at your lieisure or it may be requested by LiteSpeed tech support.
+
+### Logs
+As with most Kubernetes processes, the best troubleshooting technique is to examine the log.  This is done by getting a list of pods:
+
+Then getting the log for the .  For example:
+
+        kubectl logs ls-k8s-webadc-5b6cb78b89-qdhjx > pod.log
+
+You can then examine pod.log at your leisure or it may be requested by LiteSpeed tech support.
+
+### Errors accessing after deletion
+You may see errors accessing service nodes if you just delete the service and attempt to re-create it right away.  You should delete all services and pods, wait until they have terminated and are gone, and then re-create them.
+
+
+## Notable changes
+### 0.1.3
+- Separation of helm from other code
+- Use of this README.md as the source of primary documentation.
+
+### 0.1.2
+- Fixed a bug in HTTPS support.
+- Updated helm templates.
+- Updated doc.
+
+### 0.1.1
+- Both regular and helm support for user specified default backend.  In the helm version, helm will deploy the default backend as  documented in the Default Backend Parameters table.
