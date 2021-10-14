@@ -44,7 +44,7 @@ extraDeploy: []
 ##
 image:
   registry: docker.io
-  repository: rperper/ls-k8
+  repository: litespeedtech/ls-k8
   tag: "latest"
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -386,7 +386,7 @@ defaultBackend:
   ##
   image:
     registry: docker.io
-    repository: rperper/ols-backend
+    repository: litespeedtech/ols-backend
     tag: latest
     ## Specify a imagePullPolicy
     ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'

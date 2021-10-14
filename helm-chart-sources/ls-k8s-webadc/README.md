@@ -85,7 +85,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | Name                          | Description                                                                                                                                        | Value                              |
 | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
 | `image.registry`              | LiteSpeed WebADC Ingress Controller image registry                                                                                                 | `docker.io`                        |
-| `image.repository`            | LiteSpeed WebADC Ingress Controller image repository                                                                                               | `rperper/ls-k8`                    |
+| `image.repository`            | LiteSpeed WebADC Ingress Controller image repository                                                                                               | `litespeedtech/ls-k8`              |
 | `image.tag`                   | LiteSpeed WebADC Ingress Controller image tag                                                                                                      | `latest`                           |
 | `image.pullPolicy`            | LiteSpeed WebADC Ingress Controller image pull policy                                                                                              | `Always`                           |
 | `image.pullSecrets`           | Specify docker-registry secret names as an array                                                                                                   | `[]`                               |
@@ -172,7 +172,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `defaultBackend.enabled`                            | Enable a default backend based on LiteSpeed WebADC                                        | `false`                |
 | `defaultBackend.hostAliases`                        | Add deployment host aliases                                                               | `[]`                   |
 | `defaultBackend.image.registry`                     | Default backend image registry                                                            | `docker.io`            |
-| `defaultBackend.image.repository`                   | Default backend image repository                                                          | `rperper/ols-backend`  |
+| `defaultBackend.image.repository`                   | Default backend image repository                                                          | `litespeedtech/ols-backend` |
 | `defaultBackend.image.tag`                          | Default backend image tag (immutable tags are recommended)                                | `latest`               |
 | `defaultBackend.image.pullPolicy`                   | Image pull policy                                                                         | `Always`               |
 | `defaultBackend.image.pullSecrets`                  | Specify docker-registry secret names as an array                                          | `[]`                   |
@@ -415,6 +415,10 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+### 0.1.4
+- Use of the correct Docker repo
+- Updated doc.
+
 ### 0.1.3
 - Separation of helm from other code
 - Use of this README.md as the source of primary documentation.
