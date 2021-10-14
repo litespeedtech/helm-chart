@@ -46,7 +46,7 @@ To install the chart with the latest release from the ls-k8s-webadc directory:
 
 ```bash
 $ helm repo add ls-k8s-webadc https://litespeedtech.github.io/helm-chart/
-$ helm install ls-k8s-webadc ls-k8s-webadc/ls-k8s-webadc/
+$ helm install ls-k8s-webadc ls-k8s-webadc/ls-k8s-webadc
 ```
 
 ## Uninstalling the Chart
@@ -58,6 +58,23 @@ $ helm delete ls-k8s-webadc
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
+
+## Using an Alternate Namespace
+
+If you wish to use a namespace other than `kube-system` for the secrets and all of the other entities, you can, but you must do a slightly modified install.  
+For example, if you wish to use the namespace `ns` you would specify the secrets (using the a trial key as an example) with the `-n ns` parameter:
+
+```bash
+$ kubectl create secret generic -n ns ls-k8s-webadc --from-file=trial=./trial.key
+$ kubectl create secret tls -n ns ls-k8s-webadc-tls --key key.pem --cert cert.pem
+```
+
+Then specify the name of the namespace when you do the helm install, as well as the name of the secrets, using the `extraArgs` parameter to specify additional [LiteSpeed Kubernetes ADC Controller Arguments](# LiteSpeed Kubernetes ADC Controller Arguments).
+Note that the `extraArgs` values must be surrounded by quotes "" to indicate that it is a single value and curly braces {} to indicate that it is a map of comma separated title=value strings.
+
+```bash
+$ helm install ls-k8s-webadc ls-k8s-webadc/ls-k8s-webadc -n ns --set extraArgs="{lslb-license-secret=ns/ls-k8s-webadc,default-tls-secret=ns/ls-k8s-webadc-tls}"
+```
 
 ## Parameters
 
@@ -95,7 +112,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `scope.enabled`               | Limit the scope of the controller. Defaults to `.Release.Namespace`                                                                                | `false`                            |
 | `command`                     | Override default container command (useful when using custom images)                                                                               | `[]`                               |
 | `args`                        | Override default container args (useful when using custom images)                                                                                  | `[]`                               |
-| `extraArgs`                   | Additional command line arguments.  Without leading dashes, comma separated, in quotes.  See below for the full list.                              | `{}`                               |
+| `extraArgs`                   | Additional command line arguments.  Without leading dashes, comma separated, in quotes and curly braces.  See below for the full list.             | `{}`                               |
 | `extraEnvVars`                | Extra environment variables to be set on LiteSpeed WebADC Ingress container                                                                        | `[]`                               |
 | `extraEnvVarsSecret`          | Name of a existing Secret containing extra environment variables                                                                                   | `""`                               |
 
@@ -415,6 +432,10 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+### 0.1.5
+- Proper helm support for an alternate namespace.
+- Updated doc.
+
 ### 0.1.4
 - Use of the correct Docker repo
 - Updated doc.
