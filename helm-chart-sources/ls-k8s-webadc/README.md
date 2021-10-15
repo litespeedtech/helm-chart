@@ -16,20 +16,26 @@ This chart bootstraps a LiteSpeed Web ADC Ingress deployment on a [Kubernetes](h
 - Kubernetes 1.18+
 - Helm 3.1.0
 
+## Selecting a Namespace
+
+The default namespace is not generally where new pods and services are loaded into.  The `kube-system` namespace is the default for most system pods and a load balancer can be considered one of those.  However, your environment may have restrictions on using `kube-system` so you may choose to use a non-system namespace like `ls-k8s-webadc` to have the namespace match the other names in the system.
+
+Namespace is required on most Kubernetes commands so this document will use the name NAMESPACE to indicate the namespace you have selected.
+
 ## Adding a License
 
-The LiteSpeed Kubernetes ADC controller uses the LiteSpeed WebADC engine which is a licensed program product.  To use it you must obtain either a `trial.key` file for a trial or a `license.key` and `serial.no` files for a full license.  The Docker image requires that you define a generic secret to successfully run the software.  
+The LiteSpeed Kubernetes ADC controller uses the LiteSpeed WebADC engine which is a licensed program product.  To use it you must obtain either a `trial.key` file for a trial or a `license.key` and `serial.no` files for a full license.  The Docker image requires that you define a generic secret to successfully run the software.
 
 For a trial, place the trial.key file in the default directory and run:
 
 ```bash
-$ kubectl create secret generic -n kube-system ls-k8s-webadc --from-file=trial=./trial.key
+$ kubectl create secret generic -n NAMESPACE ls-k8s-webadc --from-file=trial=./trial.key
 ```
 
 For a full license place both files in the default directory and run:
 
 ```bash
-$ kubectl create secret generic -n kube-system ls-k8s-webadc --from-file=license=./license.key --from-file=serial=./serial.no
+$ kubectl create secret generic -n NAMESPACE ls-k8s-webadc --from-file=license=./license.key --from-file=serial=./serial.no
 ```
 
 ## Making HTTPS Work
@@ -37,7 +43,7 @@ $ kubectl create secret generic -n kube-system ls-k8s-webadc --from-file=license
 (Optional) To make HTTPS work you must apply a private key file and a certificate file as another secret definition.  If the private key file is named `key.pem` and the certificate file named `cert.pem` you would specify:
 
 ```bash
-$ kubectl create secret tls -n kube-system ls-k8s-webadc-tls --key key.pem --cert cert.pem
+$ kubectl create secret tls -n NAMESPACE ls-k8s-webadc-tls --key key.pem --cert cert.pem
 ```
 
 ## Installing the Chart
@@ -46,7 +52,7 @@ To install the chart with the latest release from the ls-k8s-webadc directory:
 
 ```bash
 $ helm repo add ls-k8s-webadc https://litespeedtech.github.io/helm-chart/
-$ helm install ls-k8s-webadc ls-k8s-webadc/ls-k8s-webadc
+$ helm install ls-k8s-webadc ls-k8s-webadc/ls-k8s-webadc -n NAMESPACE
 ```
 
 ## Uninstalling the Chart
@@ -58,23 +64,6 @@ $ helm delete ls-k8s-webadc
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
-
-## Using an Alternate Namespace
-
-If you wish to use a namespace other than `kube-system` for the secrets and all of the other entities, you can, but you must do a slightly modified install.  
-For example, if you wish to use the namespace `ns` you would specify the secrets (using the a trial key as an example) with the `-n ns` parameter:
-
-```bash
-$ kubectl create secret generic -n ns ls-k8s-webadc --from-file=trial=./trial.key
-$ kubectl create secret tls -n ns ls-k8s-webadc-tls --key key.pem --cert cert.pem
-```
-
-Then specify the name of the namespace when you do the helm install, as well as the name of the secrets, using the `extraArgs` parameter to specify additional [LiteSpeed Kubernetes ADC Controller Arguments](# LiteSpeed Kubernetes ADC Controller Arguments).
-Note that the `extraArgs` values must be surrounded by quotes "" to indicate that it is a single value and curly braces {} to indicate that it is a map of comma separated title=value strings.
-
-```bash
-$ helm install ls-k8s-webadc ls-k8s-webadc/ls-k8s-webadc -n ns --set extraArgs="{lslb-license-secret=ns/ls-k8s-webadc,default-tls-secret=ns/ls-k8s-webadc-tls}"
-```
 
 ## Parameters
 
@@ -365,8 +354,7 @@ As an alternative, you can use of the preset configurations for pod affinity, po
 And if necessary you can hard code the node the Deployment schedules a pod to with `nodeName`.
 
 
-LiteSpeed Kubernetes ADC Controller Arguments
----------------------------------------------
+## LiteSpeed Kubernetes ADC Controller Arguments
 
 The LiteSpeed Kubernetes ADC Controller arguments are specified in helm with the `extraArgs` list above or if you are creating or modifying your own .yaml files in `spec/template/spec/containers/args`.  In yaml files an initial leading dash is required for repeating parameters and the second double leading dash is required for all controller arguments.  When using helm `extraArgs` do not use leading dashes and comma separate parameters.
 
@@ -400,6 +388,16 @@ The LiteSpeed Kubernetes ADC Controller arguments are specified in helm with the
 
 Find more information about how to deal with common errors related to Bitnami’s Helm charts in [this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
 
+### Setting security for your namespace
+
+If log indicates an error accessing the secret, something like this: `Error accessing license secret: kube-system/ls-k8s-webadc: secrets "ls-k8s-webadc" is forbidden: User "system:serviceaccount:default:ls-k8s-webadc" cannot get resource "secrets" in API group "" in the namespace "kube-system"`, you may need to grant security to your namespace.
+
+Typically this is done as follows:
+
+```bash
+$ kubectl create clusterrolebinding default-admin --clusterrole cluster-admin --serviceaccount=default:default -n NAMESPACE
+```
+
 ### Getting the Pod Name
 
 To do any troubleshooting you'll need the full name of the pod.  This is obtained by running:
@@ -432,8 +430,12 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+### 0.1.6
+- Automatic use of the overall namespace for the license files if not specified.
+- Updated doc including security doc.
+
 ### 0.1.5
-- Proper helm support for an alternate namespace.
+- Proper helm support for a LiteSpeed ADC override parameters
 - Updated doc.
 
 ### 0.1.4
