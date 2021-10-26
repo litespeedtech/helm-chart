@@ -2,7 +2,7 @@ apiVersion: v2
 name: ls-k8s-webadc
 description: A Helm chart for LiteSpeed Web ADC Ingress Controller
 type: application
-version: 0.1.6
+version: 0.1.7
 appVersion: "latest"
 dependencies:
 - name: common

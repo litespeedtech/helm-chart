@@ -1,3 +1,4 @@
-Version 0.1.6:
-- Automatic use of the overall namespace for the license files if not specified.
-- Updated doc including security doc.
+Version 0.1.7:
+- Support for the `update-status` variable which is important in working in cloud environments.
+- Proper support for SSL definitions outside of the default
+- Support to a staging version with test code if needed.

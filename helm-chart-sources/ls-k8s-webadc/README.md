@@ -13,7 +13,7 @@ This chart bootstraps a LiteSpeed Web ADC Ingress deployment on a [Kubernetes](h
 
 ## Prerequisites
 
-- Kubernetes 1.18+
+- Kubernetes 1.19+
 - Helm 3.1.0
 
 ## Selecting a Namespace
@@ -45,6 +45,8 @@ $ kubectl create secret generic -n NAMESPACE ls-k8s-webadc --from-file=license=.
 ```bash
 $ kubectl create secret tls -n NAMESPACE ls-k8s-webadc-tls --key key.pem --cert cert.pem
 ```
+
+If you have a separate ca_bundle as well (often called an intermediate), please append the contents of that after the certificate file's contents.
 
 ## Installing the Chart
 
@@ -377,10 +379,11 @@ The LiteSpeed Kubernetes ADC Controller arguments are specified in helm with the
 | `--lslb-zeroconf-port` | The port to be used to access zero conf in LiteSpeed Web ADC. | `7099` |
 | `--lslb-zeroconf-user` | The user to be used to access zero conf.  Changing it is documented in [ZeroConf](https://docs.litespeedtech.com/products/lsadc/zeroconf/). | `zero` |
 | `--profiling` | Enable profiling at the health port.  It exposes /debug/pprof/ endpoint. | `true` |
-| `--publish-service` | Specify namespace/name of Service whose hostnames/IP addresses are set in Ingress resource instead of addresses of Ingress controller Pods.  Takes the form namespace/name. | None |
+| `--publish-service` | Specify namespace/name of Service whose hostnames/IP addresses are set in Ingress resource instead of addresses of Ingress controller Pods.  Takes the form namespace/name. | `ls-k8s-webadc` |
 | `--reload-burst` | Reload burst that can exceed reload-rate. | `1` |
 | `--reload-rate` | Rate (QPS) of reloading LiteSpeed WebADC configuration to deal with frequent backend updates in a single batch. | `1.0` |
 | `--v` |  Sets info logging.  --v=4 is the most verbose. | `2` |
+| `--update-status` | Update the load-balancer status of Ingress objects this controller satisfies.  Requires publish-service to be specified. | `true` |
 | `--watch-namespace` | The namespace to watch for Ingress events. | All namespaces |
 
 
@@ -430,6 +433,11 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+### 0.1.7
+- Support for the `update-status` variable which is important in working in cloud environments.
+- Proper support for SSL definitions outside of the default
+- Support to a staging version with test code if needed.
+
 ### 0.1.6
 - Automatic use of the overall namespace for the license files if not specified.
 - Updated doc including security doc.
