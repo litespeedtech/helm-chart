@@ -433,6 +433,10 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+### 0.1.8
+- Fix bug in `update-status` where status updates were being done for controllers not matching the ingress class
+- Update LiteSpeed Web ADC image so that it uses the latest fixes for TLS secrets.
+
 ### 0.1.7
 - Support for the `update-status` variable which is important in working in cloud environments.
 - Proper support for SSL definitions outside of the default
