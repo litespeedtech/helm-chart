@@ -433,6 +433,10 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+### 0.1.9
+- Fix bug in termination so it is faster and cleans up addresses in Ingress classes.
+- Support the ingress class Annotation `kubernetes.io/ingress.class` as well as the ingress class definition.
+
 ### 0.1.8
 - Fix bug in `update-status` where status updates were being done for controllers not matching the ingress class
 - Update LiteSpeed Web ADC image so that it uses the latest fixes for TLS secrets.
