@@ -40,7 +40,7 @@ $ kubectl create secret generic -n NAMESPACE ls-k8s-webadc --from-file=license=.
 
 ## Making HTTPS Work
 
-(Optional) To make HTTPS work you must apply a private key file and a certificate file as another secret definition.  If the private key file is named `key.pem` and the certificate file named `cert.pem` you would specify:
+(Optional) To make HTTPS work for the default backend you must apply a private key file and a certificate file as another secret definition.  If the private key file is named `key.pem` and the certificate file named `cert.pem` you would specify:
 
 ```bash
 $ kubectl create secret tls -n NAMESPACE ls-k8s-webadc-tls --key key.pem --cert cert.pem
@@ -433,6 +433,9 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+### 0.1.10
+- No longer require a backend TLS secret to allow TLS to function at all.
+
 ### 0.1.9
 - Fix bug in termination so it is faster and cleans up addresses in Ingress classes.
 - Support the ingress class Annotation `kubernetes.io/ingress.class` as well as the ingress class definition.

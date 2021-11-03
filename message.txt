@@ -1,3 +1,2 @@
-Version 0.1.9:
-- Fix bug in termination so it is faster and cleans up addresses in Ingress classes.
-- Support the ingress class Annotation `kubernetes.io/ingress.class` as well as the ingress class definition.
+Version 0.1.10:
+- No longer require a backend TLS secret to allow TLS to function at all.
