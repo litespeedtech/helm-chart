@@ -1,2 +1,3 @@
-Version 0.1.10:
-- No longer require a backend TLS secret to allow TLS to function at all.
+Version 0.1.11:
+- If an ingress secret is not found, do not skip the ingress, but only support HTTP.
+- Each helm release will now specify the version number of the image it wants.

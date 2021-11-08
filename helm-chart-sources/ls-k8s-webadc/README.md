@@ -62,7 +62,7 @@ $ helm install ls-k8s-webadc ls-k8s-webadc/ls-k8s-webadc -n NAMESPACE
 To uninstall/delete the deployment:
 
 ```bash
-$ helm delete ls-k8s-webadc
+$ helm delete ls-k8s-webadc -n NAMESPACE
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -363,7 +363,7 @@ The LiteSpeed Kubernetes ADC Controller arguments are specified in helm with the
 | Name | Description | Value |
 | - | - | - |
 | `--allow-internal-ip` | Allows the use address of type NodeInternalIP when fetching the external IP address.  This is the workaround for the cluster configuration where NodeExternalIP or NodeLegacyHostIP is not assigned or cannot be used. | `false` |
-| `--default-tls-secret` | Name of the Secret that contains TLS server certificate and secret key to enable TLS by default.  For those client connections which are not TLS encrypted, they are redirected to https URI permanently. | `kube-system/ls-k8s-webadc.com` |
+| `--default-tls-secret` | Name of the Secret that contains TLS server certificate and secret key to enable TLS by default.  For those client connections which are not TLS encrypted, they are redirected to https URI permanently. | `NAMESPACE/ls-k8s-webadc.com` |
 | `--deferred-shutdown-period` | How long the controller waits before actually starting shutting down when it receives shutdown signal. Specified as a Kubernetes duration. | `0` (immediate) | 
 | `--endpoint-slices` | Get endpoints from EndpointSlice resource instead of Endpoints resource. | `false` |
 | `--healthz-port` | Port for healthz endpoint.  Can be any open port. | `11972` |
@@ -373,13 +373,13 @@ The LiteSpeed Kubernetes ADC Controller arguments are specified in helm with the
 | `--lslb-enable-ocsp-stapling` | Enable OCSP stapling on ADC server. | `false` |
 | `--lslb-http-port` | Port to listen to for HTTP (non-TLS) requests.  Specifying 0 disables HTTP port. | `80` |
 | `--lslb-https-port` | Port to listen to for HTTPS (TLS) requests.  Specifying 0 disables HTTPS port. | `443` |
-| `--lslb-license-secret` | The required secret to be used to identify the LS WebADC license file(s). | `kube-system/ls-k8s-webadc` |
+| `--lslb-license-secret` | The required secret to be used to identify the LS WebADC license file(s). | `NAMESPACE/ls-k8s-webadc` |
 | `--lslb-wait-timeout` | Number of seconds to wait for lslb to start listening for ZeroConf events. | `30` |
 | `--lslb-zeroconf-password` | The password to be used to access zero conf.  The default is `zero` and changing it is documented in [ZeroConf](https://docs.litespeedtech.com/products/lsadc/zeroconf/). | `zero` |
 | `--lslb-zeroconf-port` | The port to be used to access zero conf in LiteSpeed Web ADC. | `7099` |
 | `--lslb-zeroconf-user` | The user to be used to access zero conf.  Changing it is documented in [ZeroConf](https://docs.litespeedtech.com/products/lsadc/zeroconf/). | `zero` |
 | `--profiling` | Enable profiling at the health port.  It exposes /debug/pprof/ endpoint. | `true` |
-| `--publish-service` | Specify namespace/name of Service whose hostnames/IP addresses are set in Ingress resource instead of addresses of Ingress controller Pods.  Takes the form namespace/name. | `ls-k8s-webadc` |
+| `--publish-service` | Specify namespace/name of Service whose hostnames/IP addresses are set in Ingress resource instead of addresses of Ingress controller Pods.  Takes the form namespace/name. | `NAMESPACE/ls-k8s-webadc` |
 | `--reload-burst` | Reload burst that can exceed reload-rate. | `1` |
 | `--reload-rate` | Rate (QPS) of reloading LiteSpeed WebADC configuration to deal with frequent backend updates in a single batch. | `1.0` |
 | `--v` |  Sets info logging.  --v=4 is the most verbose. | `2` |
@@ -433,6 +433,10 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+### 0.1.11
+- If an ingress secret is not found, do not skip the ingress, but only support HTTP.
+- Each helm release will now specify the version number of the image it wants.
+
 ### 0.1.10
 - No longer require a backend TLS secret to allow TLS to function at all.
 
