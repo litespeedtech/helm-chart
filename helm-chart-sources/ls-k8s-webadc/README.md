@@ -433,6 +433,10 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+### 0.1.12
+- [Bug Fix] Fix a bug introduced in 0.1.11 where HTTPS would still be tried to be supported an HTTP only ingress.
+- [Bug Fix] Fix a bug where the port and target port are different, did not accept the service.
+
 ### 0.1.11
 - If an ingress secret is not found, do not skip the ingress, but only support HTTP.
 - Each helm release will now specify the version number of the image it wants.
