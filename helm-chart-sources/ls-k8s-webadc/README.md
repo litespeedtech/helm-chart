@@ -435,6 +435,7 @@ You may see errors accessing service nodes if you just delete the service and at
 ## Notable changes
 ### 0.1.13
 - [Bug Fix] Fixed a crash which occurred if you have no ingress definitions defined with secrets at startup and have not defined a default secret.
+- [Bug Fix] Fixed a helm packaging issue which resulted in the wrong version being pulled at the remote.
 
 ### 0.1.12
 - [Bug Fix] Fix a bug introduced in 0.1.11 where HTTPS would still be tried to be supported an HTTP only ingress.
