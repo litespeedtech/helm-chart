@@ -368,6 +368,7 @@ The LiteSpeed Kubernetes ADC Controller arguments are specified in helm with the
 | `--endpoint-slices` | Get endpoints from EndpointSlice resource instead of Endpoints resource. | `false` |
 | `--healthz-port` | Port for healthz endpoint.  Can be any open port. | `11972` |
 | `--ingress-class-controller` | The name of IngressClass controller for this controller.  This is the value specified in `IngressClass.spec.controller.` | `litespeedtech.com/lslbd` |
+| `--lslb-cache-store-path` | Specifies the directory in the container to hold cached images.  This directory must be mounted and pre-created. | Default location
 | `--lslb-debug` | Set to true if you want LSLB tracing enabled on startup. | `false` |
 | `--lslb-dir` | The directory in the Docker image where the LiteSpeed Web ADC is installed, the default of `/usr/local/lslb` is the default ADC directory. | `/usr/local/lslb` |
 | `--lslb-enable-ocsp-stapling` | Enable OCSP stapling on ADC server. | `false` |
@@ -385,6 +386,22 @@ The LiteSpeed Kubernetes ADC Controller arguments are specified in helm with the
 | `--v` |  Sets info logging.  --v=4 is the most verbose. | `2` |
 | `--update-status` | Update the load-balancer status of Ingress objects this controller satisfies.  Requires publish-service to be specified. | `true` |
 | `--watch-namespace` | The namespace to watch for Ingress events. | All namespaces |
+
+### Load Balancing Controller Arguments
+
+There are additional LiteSpeed Kubernetes ADC Controller arguments which are specific to modifying the operation of the load balancer specifically.  Most noteworthy are the `--lslb-affinity` and `--lslb-strategy` arguments but all of the following are important in modifying the load balancing of the controller.  Note that they are specifically designed to give you the features available in the Load Balancer configuration, Clusters tab.
+
+| Name | Description | Value |
+| - | - | - |
+| `--lslb-affinity` | Set to false for no affinity (stateless) or true for affinity (stateful). | `true` |
+| `--lslb-insert-cookie` | If specified, this is the name of a cookie to be inserted in the stream. | Do not insert cookie |
+| `--lslb-ex-bitmap` | A bit map of all of the fields that can be used in identifying a session.  As a bitmap, add up all of the values you select. 1: IP address, 2: Basic authentication, 4: Query string, 8: Cookies, 16: SSL session, 32: JVM route, 64: URL path parameter. | `127` (all) |
+| `--lslb-forward-by-header` | An additional header to be added to all proxy requests made to the backend server.  Typically ‘X-Forwarded-By’. | none |
+| `--lslb-forward-ip-header` | An additional header to be added to all proxy requests made to the backend server.  This header will use either the visiting IP or the value set in the ‘X-Forwarded-For’ header as its value, depending on the value set for Use Client IP in Header. | none |
+| `--lslb-session-id` | The session ID string used to extract the session ID from the cookie, query string and URL path parameter. | `JSESSIONID` |
+| `--lslb-sess-timeout` | The number of seconds before a session is timed out. | `600` |
+| `--lslb-show-backend` | If turned on, there will be a response header added with the  “x-lsadc-backend” title and a value which is a concatenation of the cluster name and the backend IP and port. | `false` |
+| `--lslb-strategy` | A number representing the load balancing strategy: 0 = Least-load, 1 = Round-robin, 2 = Least-session, 3 = Faster-response | `0` (least-load) |
 
 
 ## Troubleshooting
@@ -433,6 +450,11 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+### 0.1.14
+- [Feature] Added LiteSpeed WebADC load balancer configuration controls.
+- [Feature] Added LiteSpeed WebADC cache location configuration control.
+- [Bug Fix] Support TLS for site where there is a front end SSL configuration, even if there is no backend SSL configuration.
+
 ### 0.1.13
 - [Bug Fix] Fixed a crash which occurred if you have no ingress definitions defined with secrets at startup and have not defined a default secret.
 - [Bug Fix] Fixed a helm packaging issue which resulted in the wrong version being pulled at the remote.
