@@ -1,4 +1,0 @@
-Version 0.1.14:
-- [Feature] Added LiteSpeed WebADC load balancer configuration controls.
-- [Feature] Added LiteSpeed WebADC cache location configuration control.
-- [Bug Fix] Support TLS for site where there is a front end SSL configuration, even if there is no backend SSL configuration.

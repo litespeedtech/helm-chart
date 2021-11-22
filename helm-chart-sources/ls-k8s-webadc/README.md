@@ -450,6 +450,9 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+### 0.1.15
+- [Bug Fix] Turned off debugging in WebADC.
+
 ### 0.1.14
 - [Feature] Added LiteSpeed WebADC load balancer configuration controls.
 - [Feature] Added LiteSpeed WebADC cache location configuration control.
