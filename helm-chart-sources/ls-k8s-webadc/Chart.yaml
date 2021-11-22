@@ -2,8 +2,8 @@ apiVersion: v2
 name: ls-k8s-webadc
 description: A Helm chart for LiteSpeed Web ADC Ingress Controller
 type: application
-version: 0.1.14
-appVersion: "0.1.14"
+version: 0.1.15
+appVersion: "0.1.15"
 dependencies:
 - name: common
   repository: https://charts.bitnami.com/bitnami
