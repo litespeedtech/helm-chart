@@ -375,7 +375,9 @@ The LiteSpeed Kubernetes ADC Controller arguments are specified in helm with the
 | `--lslb-http-port` | Port to listen to for HTTP (non-TLS) requests.  Specifying 0 disables HTTP port. | `80` |
 | `--lslb-https-port` | Port to listen to for HTTPS (TLS) requests.  Specifying 0 disables HTTPS port. | `443` |
 | `--lslb-license-secret` | The required secret to be used to identify the LS WebADC license file(s). | `NAMESPACE/ls-k8s-webadc` |
-| `--lslb-wait-timeout` | Number of seconds to wait for lslb to start listening for ZeroConf events. | `30` |
+| `--lslb-max-conn` | Sent in the ZCUP command, lets you manually set it.  Set for all servers if set here.  | `1000` |
+| `--lslb-priority` | Sent in the ZCUP command, only useful when the strategy is Fail-over, min value 0, default 100, max value 255. Set for all servers if set here. | `100` |
+| `--lslb-wait-timeout` | Number of seconds to wait for lslb to start listening for ZeroConf events. | `10` |
 | `--lslb-zeroconf-password` | The password to be used to access zero conf.  The default is `zero` and changing it is documented in [ZeroConf](https://docs.litespeedtech.com/products/lsadc/zeroconf/). | `zero` |
 | `--lslb-zeroconf-port` | The port to be used to access zero conf in LiteSpeed Web ADC. | `7099` |
 | `--lslb-zeroconf-user` | The user to be used to access zero conf.  Changing it is documented in [ZeroConf](https://docs.litespeedtech.com/products/lsadc/zeroconf/). | `zero` |
@@ -398,10 +400,13 @@ There are additional LiteSpeed Kubernetes ADC Controller arguments which are spe
 | `--lslb-ex-bitmap` | A bit map of all of the fields that can be used in identifying a session.  As a bitmap, add up all of the values you select. 1: IP address, 2: Basic authentication, 4: Query string, 8: Cookies, 16: SSL session, 32: JVM route, 64: URL path parameter. | `127` (all) |
 | `--lslb-forward-by-header` | An additional header to be added to all proxy requests made to the backend server.  Typically ‘X-Forwarded-By’. | none |
 | `--lslb-forward-ip-header` | An additional header to be added to all proxy requests made to the backend server.  This header will use either the visiting IP or the value set in the ‘X-Forwarded-For’ header as its value, depending on the value set for Use Client IP in Header. | none |
+| `--lslb-ping-interval` | Number of seconds between pings.  Defaults to 10.  0 disables pings. | `10` |
+| `--lslb-ping-path` | The ping path to use if pinging. | `/` |
+| `--lslb-ping-smart-factor` | How much to multiply ping-interval by between idle pings.  0 disables (default), 1 uses ping interval, 2 doubles ping interval, etc.  A non-zero value detects traffic and suppresses pings if already busy. | `0` |
 | `--lslb-session-id` | The session ID string used to extract the session ID from the cookie, query string and URL path parameter. | `JSESSIONID` |
 | `--lslb-sess-timeout` | The number of seconds before a session is timed out. | `600` |
 | `--lslb-show-backend` | If turned on, there will be a response header added with the  “x-lsadc-backend” title and a value which is a concatenation of the cluster name and the backend IP and port. | `false` |
-| `--lslb-strategy` | A number representing the load balancing strategy: 0 = Least-load, 1 = Round-robin, 2 = Least-session, 3 = Faster-response | `0` (least-load) |
+| `--lslb-strategy` | A number representing the load balancing strategy: 0 = Least-load, 1 = Round-robin, 2 = Least-session, 3 = Faster-response, 4 = Failover | `0` (least-load) |
 
 
 ## Troubleshooting
@@ -450,6 +455,15 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+### 0.1.16
+- [Feature] Full support for new load balancer features including the Fail-over strategy to improve availability, and Smart ping to reduce network traffic.
+- [Feature] Support path as well as domain and properly report path not found (404) for a root with no path defined (subdirectories only).
+- [Feature] Support for wildcarded domains.
+- [Feature] Report additional troubleshooting info to the kubernetes log about a failure to bring up lslb
+- [Bug Fix] When testing whether WebADC is up, ping local host rather than random backend.
+- [Bug Fix] When testing whether WebADC is up, use domain rather than IP address (as is required in ZeroConf).
+- [Bug Fix] Do not crash when using a root path along with a non-root path.
+
 ### 0.1.15
 - [Bug Fix] Turned off debugging in WebADC.
 
