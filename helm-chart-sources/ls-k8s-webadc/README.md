@@ -455,6 +455,9 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+### 0.1.17
+- [Bug Fix] Fixed bug introduced in 0.1.16 where only the default backend is used if there are multiple backends.
+
 ### 0.1.16
 - [Feature] Full support for new load balancer features including the Fail-over strategy to improve availability, and Smart ping to reduce network traffic.
 - [Feature] Support path as well as domain and properly report path not found (404) for a root with no path defined (subdirectories only).
