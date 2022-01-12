@@ -45,7 +45,7 @@ extraDeploy: []
 image:
   registry: docker.io
   repository: litespeedtech/ls-k8
-  tag: "0.1.17"
+  tag: "0.1.18"
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -387,7 +387,7 @@ defaultBackend:
   image:
     registry: docker.io
     repository: litespeedtech/ols-backend
-    tag: "0.1.17"
+    tag: "0.1.18"
     ## Specify a imagePullPolicy
     ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
     ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
