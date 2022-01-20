@@ -455,6 +455,11 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+### 0.1.18
+- [Feature] Full support for separate backends for a single domain by path.
+- [Feature] Added examples tarball to helm distribution.
+- [Bug Fix] Increased helm default timeouts so that a slow backend won't cause the load balancer to go into a crash loop.
+
 ### 0.1.17
 - [Bug Fix] Fixed bug introduced in 0.1.16 where only the default backend is used if there are multiple backends.
 

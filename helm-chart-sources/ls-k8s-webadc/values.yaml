@@ -45,7 +45,7 @@ extraDeploy: []
 image:
   registry: docker.io
   repository: litespeedtech/ls-k8
-  tag: "0.1.17"
+  tag: "0.1.18"
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -212,10 +212,10 @@ livenessProbe:
     port: 11972
     scheme: HTTP
   failureThreshold: 3
-  initialDelaySeconds: 10
-  periodSeconds: 10
+  initialDelaySeconds: 60
+  periodSeconds: 30
   successThreshold: 1
-  timeoutSeconds: 1
+  timeoutSeconds: 30
 ## Controller containers' readiness probe. Evaluated as a template.
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
 ## @param readinessProbe.enabled Enable readinessProbe
@@ -235,10 +235,10 @@ readinessProbe:
     port: 11972
     scheme: HTTP
   failureThreshold: 3
-  initialDelaySeconds: 10
-  periodSeconds: 10
+  initialDelaySeconds: 60
+  periodSeconds: 30
   successThreshold: 1
-  timeoutSeconds: 1
+  timeoutSeconds: 30
 ## @param customLivenessProbe Override default liveness probe
 ##
 customLivenessProbe: {}
@@ -387,7 +387,7 @@ defaultBackend:
   image:
     registry: docker.io
     repository: litespeedtech/ols-backend
-    tag: "0.1.17"
+    tag: "0.1.18"
     ## Specify a imagePullPolicy
     ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
     ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -476,10 +476,10 @@ defaultBackend:
       port: http
       scheme: HTTP
     failureThreshold: 3
-    initialDelaySeconds: 30
-    periodSeconds: 10
+    initialDelaySeconds: 60
+    periodSeconds: 30
     successThreshold: 1
-    timeoutSeconds: 5
+    timeoutSeconds: 30
   ## Default backend containers' readiness probe. Evaluated as a template.
   ## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
   ## @param defaultBackend.readinessProbe.enabled Enable readinessProbe
@@ -499,10 +499,10 @@ defaultBackend:
       port: http
       scheme: HTTP
     failureThreshold: 6
-    initialDelaySeconds: 0
-    periodSeconds: 5
+    initialDelaySeconds: 60
+    periodSeconds: 30
     successThreshold: 1
-    timeoutSeconds: 5
+    timeoutSeconds: 30
   ## @param defaultBackend.podLabels Extra labels for Controller pods
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
   ##
