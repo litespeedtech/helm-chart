@@ -455,6 +455,10 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+### 0.1.19
+- [Bug Fix] Fixed bug in detection of Not Found when only child domains are specified in Ingress specifications.
+- [Bug Fix] Fixed bug in locking resulting in unnecessary performance loss.
+
 ### 0.1.18
 - [Feature] Full support for separate backends for a single domain by path.
 - [Feature] Added examples tarball to helm distribution.
