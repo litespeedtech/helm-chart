@@ -377,6 +377,7 @@ The LiteSpeed Kubernetes ADC Controller arguments are specified in helm with the
 | `--lslb-license-secret` | The required secret to be used to identify the LS WebADC license file(s). | `NAMESPACE/ls-k8s-webadc` |
 | `--lslb-max-conn` | Sent in the ZCUP command, lets you manually set it.  Set for all servers if set here.  | `1000` |
 | `--lslb-priority` | Sent in the ZCUP command, only useful when the strategy is Fail-over, min value 0, default 100, max value 255. Set for all servers if set here. | `100` |
+| `--lslb-replace-conf` | Lets you modify any parameters in the default lslbd_config.xml file.  Specify each parameter, in parens, (title=value).  For example (useIpInProxyHeader=1)(showVersionNumber=1). | none |
 | `--lslb-wait-timeout` | Number of seconds to wait for lslb to start listening for ZeroConf events. | `10` |
 | `--lslb-zeroconf-password` | The password to be used to access zero conf.  The default is `zero` and changing it is documented in [ZeroConf](https://docs.litespeedtech.com/products/lsadc/zeroconf/). | `zero` |
 | `--lslb-zeroconf-port` | The port to be used to access zero conf in LiteSpeed Web ADC. | `7099` |
@@ -455,6 +456,12 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+### 0.1.20
+- [Feature] Support Prefix and Exact path types as well as the Litespeed ImplementationSpecific type.
+- [Feature] Added controller parameter `--lslb-replace-conf` which allows replacement of any number of WebADC lslbd_config.xml parameters.
+- [Bug Fix] A number of path specific bugs have been fixed.
+- [Bug Fix] Performance improvements through better caching of domain/path information.
+
 ### 0.1.19
 - [Bug Fix] Fixed bug in detection of Not Found when only child domains are specified in Ingress specifications.
 - [Bug Fix] Fixed bug in locking resulting in unnecessary performance loss.
