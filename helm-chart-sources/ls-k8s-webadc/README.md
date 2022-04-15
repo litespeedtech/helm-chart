@@ -456,6 +456,10 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+### 0.1.21
+- [Feature] Support both Nginx and generic Rewrite annotations.
+- [Bug Fix] Correctly support multiple domains for a SSL certificate.
+
 ### 0.1.20
 - [Feature] Support Prefix and Exact path types as well as the Litespeed ImplementationSpecific type.
 - [Feature] Added controller parameter `--lslb-replace-conf` which allows replacement of any number of WebADC lslbd_config.xml parameters.
