@@ -6,6 +6,7 @@ Get the application URL by running these commands:
 
 {{- $httpPort := .Values.service.ports.http | toString }}
 {{- $httpsPort := .Values.service.ports.https | toString }}
+{{- $configPort := .Values.service.ports.config | toString }}
 
 {{- if contains "NodePort" .Values.service.type }}
 {{- if (not (empty .Values.service.nodePorts.http)) }}
@@ -31,6 +32,7 @@ Get the application URL by running these commands:
     export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "common.names.fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
     echo "Visit http://${SERVICE_IP}{{- if ne $httpPort "80" }}:{{ $httpPort }}{{ end }} to access your application via HTTP."
     echo "Visit https://${SERVICE_IP}{{- if ne $httpsPort "443" }}:{{ $httpsPort }}{{ end }} to access your application via HTTPS."
+    echo "Visit https://${SERVICE_IP}{{- if ne $configPort "7090" }}:{{ $configPort }}{{ end }} to access the load balancer's configuration."
 
 {{- else if contains "ClusterIP"  .Values.service.type }}
 

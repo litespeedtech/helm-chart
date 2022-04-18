@@ -67,6 +67,18 @@ spec:
       nodePort: null
       {{- end }}
       {{- end }}
+    {{- if .Values.service.ports.config }}
+    - name: config
+      port: {{ .Values.service.ports.config }}
+      protocol: TCP
+        # targetPort: {{ .Values.service.targetPorts.config }}
+      targetPort: {{ .Values.service.ports.config }}
+      {{- if and (or (eq .Values.service.type "NodePort") (eq .Values.service.type "LoadBalancer")) (not (empty .Values.service.nodePorts.config)) }}
+      nodePort: {{ .Values.service.nodePorts.config }}
+      {{- else if eq .Values.service.type "ClusterIP" }}
+      nodePort: null
+      {{- end }}
+      {{- end }}
     {{- range $key, $value := .Values.tcp }}
     - name: {{ $key }}-tcp
       port: {{ $key }}

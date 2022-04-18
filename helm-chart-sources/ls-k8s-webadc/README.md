@@ -456,29 +456,32 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
-### 0.1.21
+### 0.1.22 Apr 18, 2022
+- [Feature] Support configuration port in helm definition.
+
+### 0.1.21 Apr 15, 2022
 - [Feature] Support both Nginx and generic Rewrite annotations.
 - [Bug Fix] Correctly support multiple domains for a SSL certificate.
 
-### 0.1.20
+### 0.1.20 Mar 14, 2022
 - [Feature] Support Prefix and Exact path types as well as the Litespeed ImplementationSpecific type.
 - [Feature] Added controller parameter `--lslb-replace-conf` which allows replacement of any number of WebADC lslbd_config.xml parameters.
 - [Bug Fix] A number of path specific bugs have been fixed.
 - [Bug Fix] Performance improvements through better caching of domain/path information.
 
-### 0.1.19
+### 0.1.19 Jan 26, 2022
 - [Bug Fix] Fixed bug in detection of Not Found when only child domains are specified in Ingress specifications.
 - [Bug Fix] Fixed bug in locking resulting in unnecessary performance loss.
 
-### 0.1.18
+### 0.1.18 Jan 20, 2022
 - [Feature] Full support for separate backends for a single domain by path.
 - [Feature] Added examples tarball to helm distribution.
 - [Bug Fix] Increased helm default timeouts so that a slow backend won't cause the load balancer to go into a crash loop.
 
-### 0.1.17
+### 0.1.17 Dec 28, 2021
 - [Bug Fix] Fixed bug introduced in 0.1.16 where only the default backend is used if there are multiple backends.
 
-### 0.1.16
+### 0.1.16 Dec 23, 2021
 - [Feature] Full support for new load balancer features including the Fail-over strategy to improve availability, and Smart ping to reduce network traffic.
 - [Feature] Support path as well as domain and properly report path not found (404) for a root with no path defined (subdirectories only).
 - [Feature] Support for wildcarded domains.
@@ -487,55 +490,55 @@ You may see errors accessing service nodes if you just delete the service and at
 - [Bug Fix] When testing whether WebADC is up, use domain rather than IP address (as is required in ZeroConf).
 - [Bug Fix] Do not crash when using a root path along with a non-root path.
 
-### 0.1.15
+### 0.1.15 Nov 22, 2021
 - [Bug Fix] Turned off debugging in WebADC.
 
-### 0.1.14
+### 0.1.14 Nov 18, 2022
 - [Feature] Added LiteSpeed WebADC load balancer configuration controls.
 - [Feature] Added LiteSpeed WebADC cache location configuration control.
 - [Bug Fix] Support TLS for site where there is a front end SSL configuration, even if there is no backend SSL configuration.
 
-### 0.1.13
+### 0.1.13 Nov 12, 2022
 - [Bug Fix] Fixed a crash which occurred if you have no ingress definitions defined with secrets at startup and have not defined a default secret.
 - [Bug Fix] Fixed a helm packaging issue which resulted in the wrong version being pulled at the remote.
 
-### 0.1.12
+### 0.1.12 Nov 10, 2021
 - [Bug Fix] Fix a bug introduced in 0.1.11 where HTTPS would still be tried to be supported an HTTP only ingress.
 - [Bug Fix] Fix a bug where the port and target port are different, did not accept the service.
 
-### 0.1.11
+### 0.1.11 Nov 8, 2021
 - If an ingress secret is not found, do not skip the ingress, but only support HTTP.
 - Each helm release will now specify the version number of the image it wants.
 
-### 0.1.10
+### 0.1.10 Nov 3, 2021
 - No longer require a backend TLS secret to allow TLS to function at all.
 
-### 0.1.9
+### 0.1.9 Nov 1, 2021
 - Fix bug in termination so it is faster and cleans up addresses in Ingress classes.
 - Support the ingress class Annotation `kubernetes.io/ingress.class` as well as the ingress class definition.
 
-### 0.1.8
+### 0.1.8 Oct 28, 2021
 - Fix bug in `update-status` where status updates were being done for controllers not matching the ingress class
 - Update LiteSpeed Web ADC image so that it uses the latest fixes for TLS secrets.
 
-### 0.1.7
+### 0.1.7 Oct 26, 2021
 - Support for the `update-status` variable which is important in working in cloud environments.
 - Proper support for SSL definitions outside of the default
 - Support to a staging version with test code if needed.
 
-### 0.1.6
+### 0.1.6 Oct 15, 2021
 - Automatic use of the overall namespace for the license files if not specified.
 - Updated doc including security doc.
 
-### 0.1.5
+### 0.1.5 Oct 14, 2021
 - Proper helm support for a LiteSpeed ADC override parameters
 - Updated doc.
 
-### 0.1.4
+### 0.1.4 Oct 14, 2021
 - Use of the correct Docker repo
 - Updated doc.
 
-### 0.1.3
+### 0.1.3 Oct 13, 2021
 - Separation of helm from other code
 - Use of this README.md as the source of primary documentation.
 
