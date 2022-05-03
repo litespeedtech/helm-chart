@@ -456,7 +456,7 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
-### 0.1.22 Apr 29, 2022
+### 0.1.22 May 3, 2022
 - [Feature] Support WebADC configuration user interface through serialization of configuration files into Kubernetes ConfigMaps without any user intervention.
 - [Feature] Support configuration port in helm definition.
 - [Bug Fix] Reduce restarts within health checks.
