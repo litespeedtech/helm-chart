@@ -235,6 +235,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | Name                               | Description                                                                                                                            | Value          |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
 | `service.type`                     | Kubernetes Service type for Controller                                                                                                 | `LoadBalancer` |
+| `service.ports.config`             | Service configuration port.  If set, the external port for the WebAdmin Console.  Usually set to 7090 if enabled.                      | Not enabled    |
 | `service.ports.http`               | Service HTTP port                                                                                                                      | `80`           |
 | `service.ports.https`              | Service HTTPS port                                                                                                                     | `443`          |
 | `service.nodePorts.http`           | Specify the nodePort value(s) for the LoadBalancer and NodePort service types for http.                                                | `""`           |
@@ -369,6 +370,7 @@ The LiteSpeed Kubernetes ADC Controller arguments are specified in helm with the
 | `--healthz-port` | Port for healthz endpoint.  Can be any open port. | `11972` |
 | `--ingress-class-controller` | The name of IngressClass controller for this controller.  This is the value specified in `IngressClass.spec.controller.` | `litespeedtech.com/lslbd` |
 | `--lslb-cache-store-path` | Specifies the directory in the container to hold cached images.  This directory must be mounted and pre-created. | Default location
+| `--lslb-config-map-prefix` | Specify namespace/name of the prefix to be used to store modified configuration files as ConfigMaps from the load balancer's configuration directories. | `lslb` using the pod's namespace |
 | `--lslb-debug` | Set to true if you want LSLB tracing enabled on startup. | `false` |
 | `--lslb-dir` | The directory in the Docker image where the LiteSpeed Web ADC is installed, the default of `/usr/local/lslb` is the default ADC directory. | `/usr/local/lslb` |
 | `--lslb-enable-ocsp-stapling` | Enable OCSP stapling on ADC server. | `false` |
@@ -398,6 +400,7 @@ There are additional LiteSpeed Kubernetes ADC Controller arguments which are spe
 | - | - | - |
 | `--lslb-affinity` | Set to false for no affinity (stateless) or true for affinity (stateful). | `true` |
 | `--lslb-insert-cookie` | If specified, this is the name of a cookie to be inserted in the stream. | Do not insert cookie |
+| `--lslb-config-map-prefix` |  Configuration files are stored as configMaps with the default prefix: lslb.  The format for this value is namespace/prefix.  Any watched files get saved with configMaps with the specified prefix and each directory from the $SERVER_ROOT. | `lslb` |
 | `--lslb-ex-bitmap` | A bit map of all of the fields that can be used in identifying a session.  As a bitmap, add up all of the values you select. 1: IP address, 2: Basic authentication, 4: Query string, 8: Cookies, 16: SSL session, 32: JVM route, 64: URL path parameter. | `127` (all) |
 | `--lslb-forward-by-header` | An additional header to be added to all proxy requests made to the backend server.  Typically ‘X-Forwarded-By’. | none |
 | `--lslb-forward-ip-header` | An additional header to be added to all proxy requests made to the backend server.  This header will use either the visiting IP or the value set in the ‘X-Forwarded-For’ header as its value, depending on the value set for Use Client IP in Header. | none |
@@ -456,9 +459,9 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
-### 0.1.22 May 3, 2022
-- [Feature] Support WebADC configuration user interface through serialization of configuration files into Kubernetes ConfigMaps without any user intervention.
-- [Feature] Support configuration port in helm definition.
+### 0.1.22 May 6, 2022
+- [Feature] WebAdmin interface is now available including Real-Time Stats and template WebADC configuration.  Template support provides availaibility to the Web Application Firewall.
+- [Feature] Optional support for configuration port in helm definition (service.ports.config).
 - [Bug Fix] Reduce restarts within health checks.
 
 ### 0.1.21 Apr 15, 2022
