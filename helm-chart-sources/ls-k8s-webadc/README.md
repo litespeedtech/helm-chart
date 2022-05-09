@@ -460,7 +460,7 @@ You may see errors accessing service nodes if you just delete the service and at
 
 ## Notable changes
 ### 0.1.22 May 6, 2022
-- [Feature] WebAdmin interface is now available including Real-Time Stats and template WebADC configuration.  Template support provides availaibility to the Web Application Firewall.
+- [Feature] WebAdmin interface is now available including Real-Time Stats and template WebADC configuration.  Template support provides availability to the Web Application Firewall.
 - [Feature] Optional support for configuration port in helm definition (service.ports.config).
 - [Bug Fix] Reduce restarts within health checks.
 
