@@ -1,14 +1,14 @@
-LiteSpeed WebADC in Kubernetes
-==============================
+LiteSpeed Ingress Controller in Kubernetes
+==========================================
 
-The LiteSpeed Kubernetes ADC controller is a specially designed Kubernetes application and uses the LiteSpeed WebADC controller to operate as an Ingress Controller and Load Balancer to properly manage your traffic on your Kubernetes cluster.
+The LiteSpeed Ingress Controller is a specially designed Kubernetes application and uses the LiteSpeed WebADC controller to operate as an Ingress Controller and Load Balancer to properly manage your traffic on your Kubernetes cluster.
 
 It is based on the [nginx](https://github.com/kubernetes-retired/contrib/tree/master/ingress/controllers/nginx) and [nghttpx](https://github.com/zlabjp/nghttpx-ingress-lb) ingress controllers.
 
 
 ## Introduction
 
-This chart bootstraps a LiteSpeed Web ADC Ingress deployment on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
+This chart bootstraps a LiteSpeed Ingress deployment on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
 
 
 ## Prerequisites
@@ -24,7 +24,7 @@ Namespace is required on most Kubernetes commands so this document will use the 
 
 ## Adding a License
 
-The LiteSpeed Kubernetes ADC controller uses the LiteSpeed WebADC engine which is a licensed program product.  To use it you must obtain either a `trial.key` file for a trial or a `license.key` and `serial.no` files for a full license.  The Docker image requires that you define a generic secret to successfully run the software.
+The LiteSpeed Kubernetes Ingress controller uses the LiteSpeed WebADC engine which is a licensed program product.  To use it you must obtain either a `trial.key` file for a trial or a `license.key` and `serial.no` files for a full license.  The Docker image requires that you define a generic secret to successfully run the software.
 
 For a trial, place the trial.key file in the default directory and run:
 
@@ -88,14 +88,14 @@ The command removes all the Kubernetes components associated with the chart and 
 | `extraDeploy`       | Array of extra objects to deploy with the release  | `[]`  |
 
 
-### LiteSpeed WebADC Ingress Controller parameters
+### LiteSpeed Ingress Controller parameters
 
 | Name                          | Description                                                                                                                                        | Value                              |
 | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
-| `image.registry`              | LiteSpeed WebADC Ingress Controller image registry                                                                                                 | `docker.io`                        |
-| `image.repository`            | LiteSpeed WebADC Ingress Controller image repository                                                                                               | `litespeedtech/ls-k8`              |
-| `image.tag`                   | LiteSpeed WebADC Ingress Controller image tag                                                                                                      | `latest`                           |
-| `image.pullPolicy`            | LiteSpeed WebADC Ingress Controller image pull policy                                                                                              | `Always`                           |
+| `image.registry`              | LiteSpeed Ingress Controller image registry                                                                                                        | `docker.io`                        |
+| `image.repository`            | LiteSpeed Ingress Controller image repository                                                                                                      | `litespeedtech/ls-k8`              |
+| `image.tag`                   | LiteSpeed Ingress Controller image tag                                                                                                             | `latest`                           |
+| `image.pullPolicy`            | LiteSpeed Ingress Controller image pull policy                                                                                                     | `Always`                           |
 | `image.pullSecrets`           | Specify docker-registry secret names as an array                                                                                                   | `[]`                               |
 | `defaultBackendService`       | Default 404 backend service.                                                                                                                       | `""`                               |
 | `publishService.enabled`      | Set the endpoint records on the Ingress objects to reflect those on the service                                                                    | `false`                            |
@@ -104,11 +104,11 @@ The command removes all the Kubernetes components associated with the chart and 
 | `command`                     | Override default container command (useful when using custom images)                                                                               | `[]`                               |
 | `args`                        | Override default container args (useful when using custom images)                                                                                  | `[]`                               |
 | `extraArgs`                   | Additional command line arguments.  Without leading dashes, comma separated, in quotes and curly braces.  See below for the full list.             | `{}`                               |
-| `extraEnvVars`                | Extra environment variables to be set on LiteSpeed WebADC Ingress container                                                                        | `[]`                               |
+| `extraEnvVars`                | Extra environment variables to be set on LiteSpeed Ingress container                                                                               | `[]`                               |
 | `extraEnvVarsSecret`          | Name of a existing Secret containing extra environment variables                                                                                   | `""`                               |
 
 
-### LiteSpeed WebADC Ingress deployment / daemonset parameters
+### LiteSpeed Ingress deployment / daemonset parameters
 
 | Name                                                | Description                                                                                             | Value          |
 | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------- |
@@ -153,7 +153,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `podLabels`                                         | Extra labels for Controller pods                                                                        | `{}`           |
 | `podAnnotations`                                    | Annotations for Controller pods                                                                         | `{}`           |
 | `priorityClassName`                                 | Controller priorityClassName                                                                            | `""`           |
-| `hostNetwork`                                       | If the LiteSpeed WebADC deployment / daemonset should run on the host's network namespace               | `false`        |
+| `hostNetwork`                                       | If the LiteSpeed deployment / daemonset should run on the host's network namespace                      | `false`        |
 | `dnsPolicy`                                         | By default, while using host network, name resolution uses the host's DNS                               | `ClusterFirst` |
 | `terminationGracePeriodSeconds`                     | How many seconds to wait before terminating a pod                                                       | `60`           |
 | `podAffinityPreset`                                 | Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`                     | `""`           |
@@ -184,9 +184,9 @@ The command removes all the Kubernetes components associated with the chart and 
 | `defaultBackend.image.tag`                          | Default backend image tag (immutable tags are recommended)                                | `latest`               |
 | `defaultBackend.image.pullPolicy`                   | Image pull policy                                                                         | `Always`               |
 | `defaultBackend.image.pullSecrets`                  | Specify docker-registry secret names as an array                                          | `[]`                   |
-| `defaultBackend.extraArgs`                          | Additional command line arguments to pass to LiteSpeed WebADC container                   | `{}`                   |
+| `defaultBackend.extraArgs`                          | Additional command line arguments to pass to LiteSpeed container                          | `{}`                   |
 | `defaultBackend.containerPort`                      | HTTP container port number                                                                | `80`                   |
-| `defaultBackend.serverBlockConfig`                  | LiteSpeed WebADC backend default server block configuration                               | `""`                   |
+| `defaultBackend.serverBlockConfig`                  | LiteSpeed backend default server block configuration                                      | `""`                   |
 | `defaultBackend.replicaCount`                       | Desired number of default backend pods                                                    | `1`                    |
 | `defaultBackend.podSecurityContext.enabled`         | Enable Default backend pods' Security Context                                             | `false`                |
 | `defaultBackend.podSecurityContext.fsGroup`         | Group ID for the container filesystem                                                     | `1001`                 |
@@ -320,7 +320,7 @@ Bitnami will release a new chart updating its containers if a new version of the
 
 ### Sidecars and Init Containers
 
-If you have a need for additional containers to run within the same pod as the LiteSpeed WebADC Ingress Controller (e.g. an additional metrics or logging exporter), you can do so via the `sidecars` config parameter. Simply define your container according to the Kubernetes container spec.
+If you have a need for additional containers to run within the same pod as the LiteSpeed Ingress Controller (e.g. an additional metrics or logging exporter), you can do so via the `sidecars` config parameter. Simply define your container according to the Kubernetes container spec.
 
 ```yaml
 sidecars:
@@ -357,9 +357,9 @@ As an alternative, you can use of the preset configurations for pod affinity, po
 And if necessary you can hard code the node the Deployment schedules a pod to with `nodeName`.
 
 
-## LiteSpeed Kubernetes ADC Controller Arguments
+## LiteSpeed Kubernetes Ingress Controller Arguments
 
-The LiteSpeed Kubernetes ADC Controller arguments are specified in helm with the `extraArgs` list above or if you are creating or modifying your own .yaml files in `spec/template/spec/containers/args`.  In yaml files an initial leading dash is required for repeating parameters and the second double leading dash is required for all controller arguments.  When using helm `extraArgs` do not use leading dashes and comma separate parameters.
+The LiteSpeed Kubernetes Ingress Controller arguments are specified in helm with the `extraArgs` list above or if you are creating or modifying your own .yaml files in `spec/template/spec/containers/args`.  In yaml files an initial leading dash is required for repeating parameters and the second double leading dash is required for all controller arguments.  When using helm `extraArgs` do not use leading dashes and comma separate parameters.
 
 | Name | Description | Value |
 | - | - | - |
@@ -394,7 +394,7 @@ The LiteSpeed Kubernetes ADC Controller arguments are specified in helm with the
 
 ### Load Balancing Controller Arguments
 
-There are additional LiteSpeed Kubernetes ADC Controller arguments which are specific to modifying the operation of the load balancer specifically.  Most noteworthy are the `--lslb-affinity` and `--lslb-strategy` arguments but all of the following are important in modifying the load balancing of the controller.  Note that they are specifically designed to give you the features available in the Load Balancer configuration, Clusters tab.
+There are additional LiteSpeed Kubernetes Ingress Controller arguments which are specific to modifying the operation of the load balancer specifically.  Most noteworthy are the `--lslb-affinity` and `--lslb-strategy` arguments but all of the following are important in modifying the load balancing of the controller.  Note that they are specifically designed to give you the features available in the Load Balancer configuration, Clusters tab.
 
 | Name | Description | Value |
 | - | - | - |
@@ -435,7 +435,7 @@ To do any troubleshooting you'll need the full name of the pod.  This is obtaine
 
 Note that we recommend running the wide version of the command so that you can see not only the names by the nodes and addresses of the pod.
 
-The name of the LiteSpeed Kubernetes ADC controller pod is ls-k8s-webadc-SUFFIX.  For example: `ls-k8s-webadc-5b6cb78b89-qdhjx`
+The name of the LiteSpeed Kubernetes Ingress controller pod is ls-k8s-webadc-SUFFIX.  For example: `ls-k8s-webadc-5b6cb78b89-qdhjx`
 
 ### Pod Status
 
@@ -459,6 +459,12 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+### 0.1.23 May 19, 2022
+- [Feature] Red/Blue and Canary deployments using annotations.
+- [Bug Fix] context_list is properly passed in ZeroConf between Go program and load balancer resulting in contexts now working correctly.
+- [Bug Fix[ A missing exact context entry is now correctly added into contexts.
+- [Bug Fix] Use and document vhostPerDomain correctly.
+
 ### 0.1.22 May 6, 2022
 - [Feature] WebAdmin interface is now available including Real-Time Stats and template WebADC configuration.  Template support provides availability to the Web Application Firewall.
 - [Feature] Optional support for configuration port in helm definition (service.ports.config).
