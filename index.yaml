@@ -2,8 +2,8 @@ apiVersion: v1
 entries:
   ls-k8s-webadc:
   - apiVersion: v2
-    appVersion: 0.1.23
-    created: "2022-05-19T10:12:40.010033121-04:00"
+    appVersion: 0.1.24
+    created: "2022-05-24T16:00:30.162115243-04:00"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -11,11 +11,11 @@ entries:
       - bitnami-common
       version: 1.x.x
     description: A Helm chart for LiteSpeed Web ADC Ingress Controller
-    digest: a895dfa033bfde6580559eef023f05bbf14e4f7d98ed793ad95c4910c94c4f8a
+    digest: 86b902e84dafb4146ace4b8a7abce895247410ca750df7a7a0feffa1438ea7bf
     icon: https://litespeedtech.com/images/icons/web-adc-logo-icon.png
     name: ls-k8s-webadc
     type: application
     urls:
-    - https://litespeedtech.github.io/helm-chart/ls-k8s-webadc-0.1.23.tgz
-    version: 0.1.23
-generated: "2022-05-19T10:12:40.00192814-04:00"
+    - https://litespeedtech.github.io/helm-chart/ls-k8s-webadc-0.1.24.tgz
+    version: 0.1.24
+generated: "2022-05-24T16:00:30.111415836-04:00"

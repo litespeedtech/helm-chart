@@ -459,6 +459,11 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+### 0.1.24 May 24, 2022
+- [Feature] Added regular expressions to advanced deployments with the new annotation `litespeedtech.com/hostx.servicex.weight`
+- [Bug Fix] For an advanced deployment, if you specify the same host twice, it will correctly use the first one rather than generate an incorrect ZeroConf definition.
+- [Bug Fix] If you change the definition, the replaced definition will be not cached for new session use, though existing ones will still finish correctly.
+
 ### 0.1.23 May 19, 2022
 - [Feature] Red/Blue and Canary deployments using annotations.
 - [Bug Fix] context_list is properly passed in ZeroConf between Go program and load balancer resulting in contexts now working correctly.
