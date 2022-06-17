@@ -32,11 +32,14 @@ For a trial, place the trial.key file in the default directory and run:
 $ kubectl create secret generic -n NAMESPACE ls-k8s-webadc --from-file=trial=./trial.key
 ```
 
-For a full license place both files in the default directory and run:
+For a full license, create the serial.no file as per [standalone license activation](https://docs.litespeedtech.com/licenses/how-to/#activate-a-license) and create the serial secret:
 
 ```bash
-$ kubectl create secret generic -n NAMESPACE ls-k8s-webadc --from-file=license=./license.key --from-file=serial=./serial.no
+$ echo "SERIAL_NO" > /usr/local/lslb/conf/serial.no
+$ kubectl create secret generic -n NAMESPACE ls-k8s-webadc --from-file=serial=./serial.no
 ```
+
+The LiteSpeed Ingress Controller will read and verify the serial.no, create a license.key in the directory internally and a license secret for later consumption.  This only needs to be done once per serial number.
 
 ## Making HTTPS Work
 
@@ -235,7 +238,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | Name                               | Description                                                                                                                            | Value          |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
 | `service.type`                     | Kubernetes Service type for Controller                                                                                                 | `LoadBalancer` |
-| `service.ports.config`             | Service configuration port.  If set, the external port for the WebAdmin Console.  Usually set to 7090 if enabled.                      | Not enabled    |
+| `service.ports.config`             | Service configuration port.  If set, the external port for the WebAdmin Console.  Usually set to 7090 if enabled. Can be set as a controller argument.| Not enabled    |
 | `service.ports.http`               | Service HTTP port                                                                                                                      | `80`           |
 | `service.ports.https`              | Service HTTPS port                                                                                                                     | `443`          |
 | `service.nodePorts.http`           | Specify the nodePort value(s) for the LoadBalancer and NodePort service types for http.                                                | `""`           |
@@ -274,25 +277,6 @@ The command removes all the Kubernetes components associated with the chart and 
 | `autoscaling.maxReplicas`  | Maximum number of Controller replicas                                     | `11`    |
 | `autoscaling.targetCPU`    | Target CPU utilization percentage                                         | `""`    |
 | `autoscaling.targetMemory` | Target Memory utilization percentage                                      | `""`    |
-
-
-### Metrics parameters
-
-| Name                                      | Description                                                                   | Value       |
-| ----------------------------------------- | ----------------------------------------------------------------------------- | ----------- |
-| `metrics.enabled`                         | Enable exposing Controller statistics                                         | `false`     |
-| `metrics.service.type`                    | Type of Prometheus metrics service to create                                  | `ClusterIP` |
-| `metrics.service.port`                    | Service HTTP management port                                                  | `9913`      |
-| `metrics.service.annotations`             | Annotations for the Prometheus exporter service                               | `{}`        |
-| `metrics.serviceMonitor.enabled`          | Create ServiceMonitor resource for scraping metrics using PrometheusOperator  | `false`     |
-| `metrics.serviceMonitor.namespace`        | Namespace in which Prometheus is running                                      | `""`        |
-| `metrics.serviceMonitor.interval`         | Interval at which metrics should be scraped                                   | `30s`       |
-| `metrics.serviceMonitor.scrapeTimeout`    | Specify the timeout after which the scrape is ended                           | `""`        |
-| `metrics.serviceMonitor.selector`         | ServiceMonitor selector labels                                                | `{}`        |
-| `metrics.prometheusRule.enabled`          | Create PrometheusRules resource for scraping metrics using PrometheusOperator | `false`     |
-| `metrics.prometheusRule.additionalLabels` | Used to pass Labels that are required by the Installed Prometheus Operator    | `{}`        |
-| `metrics.prometheusRule.namespace`        | Namespace which Prometheus is running in                                      | `""`        |
-| `metrics.prometheusRule.rules`            | Rules to be prometheus in YAML format, check values for an example            | `[]`        |
 
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
@@ -364,6 +348,8 @@ The LiteSpeed Kubernetes Ingress Controller arguments are specified in helm with
 | Name | Description | Value |
 | - | - | - |
 | `--allow-internal-ip` | Allows the use address of type NodeInternalIP when fetching the external IP address.  This is the workaround for the cluster configuration where NodeExternalIP or NodeLegacyHostIP is not assigned or cannot be used. | `false` |
+| `--config-service-port` | The port to expose for configuration if you wish to enable it.  Set to 0 to not expose the configuration; when non-zero should be set to 7090 in most cases. | `0` |
+| `--config-service-target-port` | The port to be used internally for configuration within the pod. | `7090` |
 | `--default-tls-secret` | Name of the Secret that contains TLS server certificate and secret key to enable TLS by default.  For those client connections which are not TLS encrypted, they are redirected to https URI permanently. | `NAMESPACE/ls-k8s-webadc.com` |
 | `--deferred-shutdown-period` | How long the controller waits before actually starting shutting down when it receives shutdown signal. Specified as a Kubernetes duration. | `0` (immediate) | 
 | `--endpoint-slices` | Get endpoints from EndpointSlice resource instead of Endpoints resource. | `false` |
@@ -388,6 +374,7 @@ The LiteSpeed Kubernetes Ingress Controller arguments are specified in helm with
 | `--publish-service` | Specify namespace/name of Service whose hostnames/IP addresses are set in Ingress resource instead of addresses of Ingress controller Pods.  Takes the form namespace/name. | `NAMESPACE/ls-k8s-webadc` |
 | `--reload-burst` | Reload burst that can exceed reload-rate. | `1` |
 | `--reload-rate` | Rate (QPS) of reloading LiteSpeed WebADC configuration to deal with frequent backend updates in a single batch. | `1.0` |
+| `--run-before-lb` | A single line set of UNIX commands which are run before the load balancer is started.  Can be used to apply floating IPs or similar commands. | none |
 | `--v` |  Sets info logging.  --v=4 is the most verbose. | `2` |
 | `--update-status` | Update the load-balancer status of Ingress objects this controller satisfies.  Requires publish-service to be specified. | `true` |
 | `--watch-namespace` | The namespace to watch for Ingress events. | All namespaces |
@@ -411,6 +398,21 @@ There are additional LiteSpeed Kubernetes Ingress Controller arguments which are
 | `--lslb-sess-timeout` | The number of seconds before a session is timed out. | `600` |
 | `--lslb-show-backend` | If turned on, there will be a response header added with the  “x-lsadc-backend” title and a value which is a concatenation of the cluster name and the backend IP and port. | `false` |
 | `--lslb-strategy` | A number representing the load balancing strategy: 0 = Least-load, 1 = Round-robin, 2 = Least-session, 3 = Faster-response, 4 = Failover | `0` (least-load) |
+
+### Metrics Specific Arguments
+
+The following are addigional LiteSpeed Ingress Controller Arguments used specifically to generate and use Prometheus specific metrics using the built-in exporter.
+
+| Name | Description | Value |
+| - | - | - |
+| `--enable-metrics` | Whether the built-in Prometheus exporter is activated.  Enable by setting to true. | `false` |
+| `--install-prometheus` | Whether Prometheus should be installed on this pod.  Enable by setting to true. | `false` |
+| `--metrics-evaluation-interval` | How often Prometheus should evaluate the data (in time format). | `1m` |
+| `--metrics-scrape-interval` | Specify how often Prometheus should scrape the .rtreport file (in time format). | `1m` |
+| `--metrics-service-port` | The port to be used to access metrics, if enabled.  0 does not expose it outside the pod. | `0` |
+| `--metrics-service-target-port` | The port to be used to access metrics, within the pod, if enabled.  This is the reserved port and is rarely changed. | `9936` |
+| `--prometheus-port` | The port that will be exported to use Prometheus, if installed.  | '9090' |
+| `--prometheus-target-port` | The port that will be used within the pod for Prometheus, if installed. | `9091` |
 
 
 ## Troubleshooting
@@ -446,6 +448,7 @@ Sometimes the problems are described in a simple pod description.  For example:
 You can examine desc.log at your lieisure or it may be requested by LiteSpeed tech support.
 
 ### Logs
+
 As with most Kubernetes processes, the best troubleshooting technique is to examine the log.  This is done by getting a list of pods:
 
 Then getting the log for the .  For example:
@@ -455,10 +458,20 @@ Then getting the log for the .  For example:
 You can then examine pod.log at your leisure or it may be requested by LiteSpeed tech support.
 
 ### Errors accessing after deletion
+
 You may see errors accessing service nodes if you just delete the service and attempt to re-create it right away.  You should delete all services and pods, wait until they have terminated and are gone, and then re-create them.
 
 
 ## Notable changes
+
+### 0.1.25 June 17, 2022
+- [Feature] There is now a built-in Prometheus metrics exporter.  Must be enabled by the Ingress Controller argument `enable-metrics` to be activated.  Prometheus can be installed on the service pod as well using the argument `install-prometheus`.
+- [Feature] Ingress Controller argument `--run-before-lb='commands'` can specify any number of commands that will be run before the load balancer starts.
+- [Feature] New Ingress Controller argument `config-service-port` can be used to expose the config port without the use of helm configuration.
+- [Bug Fix] Licensing documented and functions correctly.
+- [Bug Fix] Correctly apply secrets even for secrets missing a name.
+- [Bug Fix] Correctly apply command line `lslb-config-map-prefix`
+
 ### 0.1.24 May 24, 2022
 - [Feature] Added regular expressions to advanced deployments with the new annotation `litespeedtech.com/hostx.servicex.weight`
 - [Bug Fix] For an advanced deployment, if you specify the same host twice, it will correctly use the first one rather than generate an incorrect ZeroConf definition.
