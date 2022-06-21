@@ -64,7 +64,7 @@ image:
 containerPorts:
   http: 80
   https: 443
-  ##config: 7090
+##  config: 7090
 ## @param logLevel The verbosity logging level.
 ## default is 2, 4 or higher does debugging or tracing
 logLevel: 2
@@ -136,7 +136,9 @@ daemonset:
   hostPorts:
     http: 80
     https: 443
-    ##config: 7090
+##    config: 7090
+##    prometheus: 9090
+##    prometheus_exporter: 9936
 ## @param replicaCount Desired number of Controller pods
 ##
 replicaCount: 1

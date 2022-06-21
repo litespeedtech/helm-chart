@@ -412,6 +412,9 @@ The following are addigional LiteSpeed Ingress Controller Arguments used specifi
 | `--metrics-service-port` | The port to be used to access metrics, if enabled.  0 does not expose it outside the pod. | `0` |
 | `--metrics-service-target-port` | The port to be used to access metrics, within the pod, if enabled.  This is the reserved port and is rarely changed. | `9936` |
 | `--prometheus-port` | The port that will be exported to use Prometheus, if installed.  | '9090' |
+| `--prometheus-remote-password` | The prometheus remote_write password.  Often your Grafana Prometheus Metrics API Key. | none |
+| `--prometheus-remote-url` | The prometheus remote_write url.  Often your Grafana Prometheus Metrics service. | none |
+| `--prometheus-remote-user` | The prometheus remote_write username.  Often your Grafana Prometheus Metrics username (a number). | none |
 | `--prometheus-target-port` | The port that will be used within the pod for Prometheus, if installed. | `9091` |
 
 
@@ -463,6 +466,10 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+
+### 0.1.26
+- [Feature] New `prometheus-remote` Prometheus arguments which can be used to have Prometheus push stats to Grafana Cloud.
+- [Feature] Removed all references to v1beta1
 
 ### 0.1.25 June 17, 2022
 - [Feature] There is now a built-in Prometheus metrics exporter.  Must be enabled by the Ingress Controller argument `enable-metrics` to be activated.  Prometheus can be installed on the service pod as well using the argument `install-prometheus`.
