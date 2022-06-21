@@ -598,7 +598,7 @@ service:
   ports:
     http: 80
     https: 443
-    #config: 7090
+    ##config: 7090
   ## @param service.targetPorts [object] Map the controller service HTTP/HTTPS port
   ##
   targetPorts:
