@@ -170,11 +170,10 @@ spec:
               hostPort: {{ .Values.containerPorts.config }}
               protocol: TCP
           {{- end }}
-            {{- if .Values.metrics.enabled }}
+          {{- if .Values.metrics.enabled }}
             - name: metrics
               containerPort: {{ .Values.containerPorts.metrics }}
               protocol: TCP
-            {{- end }}
             {{- range $key, $value := .Values.tcp }}
             - name: "{{ $key }}-tcp"
               containerPort: {{ $key }}
@@ -185,6 +184,7 @@ spec:
               containerPort: {{ $key }}
               protocol: UDP
             {{- end }}
+          {{- end }}
           {{- if .Values.resources }}
           resources: {{- toYaml .Values.resources | nindent 12 }}
           {{- end }}
