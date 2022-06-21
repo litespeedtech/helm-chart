@@ -467,9 +467,10 @@ You may see errors accessing service nodes if you just delete the service and at
 
 ## Notable changes
 
-### 0.1.26
+### 0.1.26 June 21, 2022
 - [Feature] New `prometheus-remote` Prometheus arguments which can be used to have Prometheus push stats to Grafana Cloud.
-- [Feature] Removed all references to v1beta1
+- [Feature] Removed all references to v1beta1 to support Kubernetes v1.22 and above.
+- [Bug Fix] Fixed helm deployment.
 
 ### 0.1.25 June 17, 2022
 - [Feature] There is now a built-in Prometheus metrics exporter.  Must be enabled by the Ingress Controller argument `enable-metrics` to be activated.  Prometheus can be installed on the service pod as well using the argument `install-prometheus`.
