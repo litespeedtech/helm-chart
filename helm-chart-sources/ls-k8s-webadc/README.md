@@ -467,6 +467,10 @@ You may see errors accessing service nodes if you just delete the service and at
 
 ## Notable changes
 
+### 0.1.27 August 23, 2022
+- [Bug Fix] Proper support for multiple backends with different contexts for the same domain.
+- [Bug Fix] Support PathType ImplementationSpecific identically to PathPrefix to allow cert-manager to work correctly for automatic certificate verification.
+
 ### 0.1.26 June 21, 2022
 - [Feature] New `prometheus-remote` Prometheus arguments which can be used to have Prometheus push stats to Grafana Cloud.
 - [Feature] Removed all references to v1beta1 to support Kubernetes v1.22 and above.
