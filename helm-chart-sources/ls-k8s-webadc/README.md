@@ -467,6 +467,10 @@ You may see errors accessing service nodes if you just delete the service and at
 
 ## Notable changes
 
+### 0.1.28 August 26, 2022
+- [Bug Fix] Fixed a deadlock bug which resulted in a delay in the implementation and activation of Ingress configuration updates.
+- [Bug Fix] Do not require an IngressClass specification for the default IngressClass to operate correctly.
+
 ### 0.1.27 August 23, 2022
 - [Bug Fix] Proper support for multiple backends with different contexts for the same domain.
 - [Bug Fix] Support PathType ImplementationSpecific identically to PathPrefix to allow cert-manager to work correctly for automatic certificate verification.
