@@ -99,6 +99,10 @@ spec:
             - --lslb-enable-ocsp-stapling={{ .Values.lslbEnableOcspStapling }}
             - --lslb-http-port={{ .Values.service.ports.http }}
             - --lslb-https-port={{ .Values.service.ports.https }}
+          {{- if .Values.service.metrics.enabled }}
+            - --enable-metrics=true
+            - --metrics-service-port={{ .Values.service.metrics.port }}
+          {{- end }}
           {{- if .Values.defaultBackend.enabled }}
             - --default-backend-service={{ if .Values.defaultBackend.enabled }}{{ .Release.Namespace }}/{{ include "ls-k8s-webadc.defaultBackend.fullname" . }}{{ else }}{{ .Values.defaultBackendService }}{{ end }}
           {{- else if .Values.defaultBackendService }}
@@ -170,22 +174,11 @@ spec:
               hostPort: {{ .Values.containerPorts.config }}
               protocol: TCP
           {{- end }}
-          {{- if .Values.metrics.enabled }}
-            - name: metrics
-              containerPort: {{ .Values.containerPorts.metrics }}
-              protocol: TCP
-            {{- range $key, $value := .Values.tcp }}
-            - name: "{{ $key }}-tcp"
-              containerPort: {{ $key }}
-              protocol: TCP
-            {{- end }}
-            {{- range $key, $value := .Values.udp }}
-            - name: "{{ $key }}-udp"
-              containerPort: {{ $key }}
-              protocol: UDP
-            {{- end }}
-          {{- end }}
-          {{- if .Values.resources }}
+          {{- if and .Values.autoscaling.enabled .Values.autoscaling.deploymentCPULimit }}
+          resources:
+            limits:
+              cpu: {{ .Values.autoscaling.deploymentCPULimit }}
+          {{- else if .Values.resources }}
           resources: {{- toYaml .Values.resources | nindent 12 }}
           {{- end }}
           {{- if or .Values.customTemplate.configMapName .Values.extraVolumeMounts }}

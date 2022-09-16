@@ -238,6 +238,9 @@ The command removes all the Kubernetes components associated with the chart and 
 | Name                               | Description                                                                                                                            | Value          |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
 | `service.type`                     | Kubernetes Service type for Controller                                                                                                 | `LoadBalancer` |
+| `service.metrics.enabled`          | Whether Prometheus style metrics should be enabled at startup and exposed with appropriate annotations.                                | `false`        |
+| `service.metrics.port`             | The port number exported to the internet by the service.  0 does not export a port.                                                    | `0`            |
+| `service.metrics.targetPort`       | The port number exported only to the internal cluster applications.                                                                    | `9936`         |
 | `service.ports.config`             | Service configuration port.  If set, the external port for the WebAdmin Console.  Usually set to 7090 if enabled. Can be set as a controller argument.| Not enabled    |
 | `service.ports.http`               | Service HTTP port                                                                                                                      | `80`           |
 | `service.ports.https`              | Service HTTPS port                                                                                                                     | `443`          |
@@ -264,6 +267,14 @@ The command removes all the Kubernetes components associated with the chart and 
 | `serviceAccount.annotations` | Annotations for service account.                            | `{}`   |
 | `rbac.create`                | Specifies whether RBAC rules should be created              | `true` |
 
+
+### Autoscaling parameteters
+| Name                         | Description                                                 | Value   |
+| ---------------------------- | ----------------------------------------------------------- | ------- |
+| `autoscaling.enabled`        | Enables the Horizontal Pod Autoscaler                       | `false` |
+| `autoscaling.minReplicas`    | The minimum number of replicas to start with.  Usually 1. | `1`     |
+| `autoscaling.maxReplicas`    | The maximum number of replicas.  Kubernetes will only scale to the number of free nodes, so this value is only used if you have many free nodes. | `11` |
+| `autoscaling.targetCPU`      | If you decide to scale, most users scale based on CPU utilization (in percent). | `50` |
 
 ### Other parameters
 
@@ -466,6 +477,10 @@ You may see errors accessing service nodes if you just delete the service and at
 
 
 ## Notable changes
+
+### 0.1.29
+- [Improvement] Helm install includes support for auto-scaling.
+- [Improvement] Caching is enabled by default
 
 ### 0.1.28 August 26, 2022
 - [Bug Fix] Fixed a deadlock bug which resulted in a delay in the implementation and activation of Ingress configuration updates.

@@ -45,7 +45,7 @@ extraDeploy: []
 image:
   registry: docker.io
   repository: litespeedtech/ls-k8
-  tag: "0.1.28"
+  tag: "0.1.29"
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -188,12 +188,14 @@ minReadySeconds: 0
 ## lines, adjust them as necessary, and remove the curly braces after 'resources:'.
 ## @param resources.limits The resources limits for the Controller container
 ## @param resources.requests The requested resources for the Controller container
+## Do not specify limits here when you use autoscaling
 ##
 resources:
   ## Example:
   ## limits:
   ##    cpu: 250m
   ##    memory: 256Mi
+  ## If specifying a resource limit for autoscaling, do it in the autoscaling section
   limits: {}
   ## Examples:
   ## requests:
@@ -394,7 +396,7 @@ defaultBackend:
   image:
     registry: docker.io
     repository: litespeedtech/ols-backend
-    tag: "0.1.28"
+    tag: "0.1.29"
     ## Specify a imagePullPolicy
     ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
     ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -644,7 +646,24 @@ service:
   ## @param service.healthCheckNodePort Set this to the managed health-check port the kube-proxy will expose. If blank, a random port in the `NodePort` range will be assigned
   ##
   healthCheckNodePort: 0
-
+  ## Prometheus exporter parameters
+  ##
+  metrics:
+    ## @param metrics.enabled Enable exposing Controller statistics
+    ##
+    enabled: false
+    ## Prometheus exporter service parameters
+    ##
+    ## @param metrics.service.port Service HTTP management port
+    ##
+    port: 0
+    targetPort: 9936
+    ## @param metrics.service.annotations [object] Annotations for the Prometheus exporter service
+    ##
+    annotations: {
+      prometheus.io/scrape: "true",
+      prometheus.io/port: "{{ .Values.service.metrics.targetPort }}"
+    }
 ## @section RBAC parameters
 
 ## Pods Service Account
@@ -684,19 +703,6 @@ pdb:
   ## @param pdb.maxUnavailable Maximum number/percentage of Controller pods that may be made unavailable
   ##
   maxUnavailable: ""
-## Controller Autoscaling configuration
-## @param autoscaling.enabled Enable autoscaling for Controller
-## @param autoscaling.minReplicas Minimum number of Controller replicas
-## @param autoscaling.maxReplicas Maximum number of Controller replicas
-## @param autoscaling.targetCPU Target CPU utilization percentage
-## @param autoscaling.targetMemory Target Memory utilization percentage
-##
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 11
-  targetCPU: ""
-  targetMemory: ""
 
 ## @section Metrics parameters
 
@@ -756,3 +762,20 @@ metrics:
     additionalLabels: {}
     namespace: ""
     rules: []
+  
+## Controller Autoscaling configuration
+## @param autoscaling.enabled Enable autoscaling for Controller
+## @param autoscaling.minReplicas Minimum number of Controller replicas
+## @param autoscaling.maxReplicas Maximum number of Controller replicas
+## @param autoscaling.targetCPU Target CPU utilization percentage (must be specified if scaling using CPU)
+## @param autoscaling.targetMemory Target Memory utilization percentage (must be specified if scaling using memory)
+##
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 11
+  targetCPU: "50"
+  targetMemory: ""
+## Note that you must specify a Deployment CPU resource limit for autoscaling to work by CPU.
+  deploymentCPULimit: "200m"
+   
