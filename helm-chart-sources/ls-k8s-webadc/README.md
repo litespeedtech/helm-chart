@@ -478,7 +478,10 @@ You may see errors accessing service nodes if you just delete the service and at
 
 ## Notable changes
 
-### 0.1.29
+### 0.1.30 September 30, 2022
+- [Bug Fix] Merged in latest load balancer fixes to address licensing and minor issues.
+
+### 0.1.29 September 16, 2022
 - [Improvement] Helm install includes support for auto-scaling.
 - [Improvement] Caching is enabled by default
 
