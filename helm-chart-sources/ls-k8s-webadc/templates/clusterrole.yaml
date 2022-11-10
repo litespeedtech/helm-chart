@@ -81,7 +81,6 @@ rules:
       - get
       - list
       - watch
-  {{- if .Values.gateway.enabled }}
   - apiGroups:
     - gateway.networking.k8s.io
     resources:
@@ -109,5 +108,4 @@ rules:
     - udproutes/status
     verbs:
     - update  
-  {{- end }}
 {{- end -}}
