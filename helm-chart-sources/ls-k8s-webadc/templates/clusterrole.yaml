@@ -23,6 +23,8 @@ rules:
     verbs:
       - list
       - watch
+      - update
+      - delete
   {{- if and .Values.scope.enabled .Values.scope.namespace }}
   - apiGroups:
       - ""
@@ -95,6 +97,7 @@ rules:
     - list
     - watch
     - set
+    - create
   - apiGroups:
     - gateway.networking.k8s.io
     resources:

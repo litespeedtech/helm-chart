@@ -1,0 +1,36 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+apiVersion: v2
+appVersion: 0.2.0
+dependencies:
+- - name: common
+  repository: https://charts.bitnami.com/bitnami
+  tags:
+  - bitnami-common
+  version: 1.x.x
+description: A Helm chart for LiteSpeed Web ADC Ingress Controller
+icon: https://litespeedtech.com/images/icons/web-adc-logo-icon.png
+name: ls-k8s-webadc
+type: application
+version: 0.2.0
+
+...
+files:
+  ls-k8s-webadc-0.2.0.tgz: sha256:e78ae46b8bfc1b8bbd92cb15539cfc3099e009e3a98072eadfff2436312ad947
+-----BEGIN PGP SIGNATURE-----
+
+wsFcBAEBCgAQBQJjbQ+WCRAYKl1clULjwAAAApYQAGtmYjqMMOAmnBNJecr5EP9G
+BUaedYfNIH4NyNrVTimeswZfeCyJZbAlU0RVSK0Ibmo1GNqQ6tLaUB/nGW7gnHDr
+3DWMqHBRE08sndQXvoyDta40UajOCHsyTixutN12Do1eHjKow8fDbOLpOq5Z+H1r
+xBAhQhhMOxXCKFVdl9wifVCiQ0EkCiAYT+1VI9OpCQg8ofBSj8qR72ZuUbwY/Q1a
+T8rx8Xzyn7jV9zAj2adoMUv7JUg/RNEtRfgBIkzvVIjqaqW1Rh4VF2qiBK0kd8hm
+ghrLbuFKsGGQkp5e2Ha8J6Xxp93WK1DY2gFucYXMfLB6aeDpebXfniRQy1RWfurr
+g9EsWTRzJXJ0DjLtVFez7PClqrHcRVqDYz0liWhb5z/l/MECowGKEaWFd72T3B+Y
+dIaoVHwqUDYyUfaWKeMRyFQvGkpevaHwsqVKxjHMgAJAPAZaUOpLREmKiROyuV0O
+K//hFaA9yn0prxpaWY4RVCIiKLx7R7Hs4RFiDQDRv89R72XP45FwJSJPklsv7mUg
+AfxFlRMFIMzzl8MhhTx20OETS2DuQmGf369jxWYNfRFDoF89gqiQhghO35/K46f9
+RspKbnN3bi9ixbQiw7O5aCn5nxweMNBg78kPSjQVvkOZxKLdeU34AqgLVaIqNvAl
+nB+nxKegK1p9cxZGWjcl
+=DOTJ
+-----END PGP SIGNATURE-----

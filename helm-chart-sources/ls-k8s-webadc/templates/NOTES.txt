@@ -48,7 +48,7 @@ An example Ingress that makes use of the controller:
   kind: Ingress
   metadata:
     annotations:
-      kubernetes.io/ingress.class: {{ .Values.ingressClass }}
+      kubernetes.io/ingress.class: lslbd
     name: example
     namespace: foo
   spec:

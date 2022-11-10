@@ -364,7 +364,9 @@ The LiteSpeed Kubernetes Ingress Controller arguments are specified in helm with
 | `--default-tls-secret` | Name of the Secret that contains TLS server certificate and secret key to enable TLS by default.  For those client connections which are not TLS encrypted, they are redirected to https URI permanently. | `NAMESPACE/ls-k8s-webadc.com` |
 | `--deferred-shutdown-period` | How long the controller waits before actually starting shutting down when it receives shutdown signal. Specified as a Kubernetes duration. | `0` (immediate) | 
 | `--endpoint-slices` | Get endpoints from EndpointSlice resource instead of Endpoints resource. | `false` |
+| `--gateway-class` | GatewayClass which this controller is responsible for. | `lslbd` |
 | `--healthz-port` | Port for healthz endpoint.  Can be any open port. | `11972` |
+| `--ingress-class` | The IngressClass this controller is responsible for. | `lslbd` |
 | `--ingress-class-controller` | The name of IngressClass controller for this controller.  This is the value specified in `IngressClass.spec.controller.` | `litespeedtech.com/lslbd` |
 | `--lslb-cache-store-path` | Specifies the directory in the container to hold cached images.  This directory must be mounted and pre-created. | Default location
 | `--lslb-config-map-prefix` | Specify namespace/name of the prefix to be used to store modified configuration files as ConfigMaps from the load balancer's configuration directories. | `lslb` using the pod's namespace |
@@ -478,8 +480,14 @@ You may see errors accessing service nodes if you just delete the service and at
 
 ## Notable changes
 
+### 0.2.0 November 10, 2022
+- [Feature] Kubernetes Gateway API support.  See https://gateway-api.sigs.k8s.io/ for a full description of the feature.
+- [Bug Fix] Adjusted helm to allow proper deletion of configmaps.
+- [Bug Fix] Support either controller name or ingress class name as the ingress class name in annotations which addresses cert-manager issue.
+- [Bug Fix] Fixed a bug in priority management.
+
 ### 0.1.30 September 30, 2022
-- [Bug Fix] Merged in latest load balancer fixes to address licensing and minor issues.
+- [Bug Fix] Merged in latest load balancer fixes to address licensing and a memory leak in HTTP/3.
 
 ### 0.1.29 September 16, 2022
 - [Improvement] Helm install includes support for auto-scaling.
