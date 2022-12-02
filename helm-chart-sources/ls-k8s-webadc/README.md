@@ -480,6 +480,11 @@ You may see errors accessing service nodes if you just delete the service and at
 
 ## Notable changes
 
+### 0.2.1 December 2, 2022
+- [Improvement] Support detecting the load of the Gateway CRDs after the controller is loaded.  However, Gateway CRDs should not be unloaded without unloading the controller.
+- [Improvement] Additional changes for Kubernetes Gateway v1beta1.
+- [Bug Fix] Fixed a memory leak in normal operations.
+
 ### 0.2.0 November 10, 2022
 - [Feature] Kubernetes Gateway API support.  See https://gateway-api.sigs.k8s.io/ for a full description of the feature.
 - [Bug Fix] Adjusted helm to allow proper deletion of configmaps.
