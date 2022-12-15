@@ -480,6 +480,14 @@ You may see errors accessing service nodes if you just delete the service and at
 
 ## Notable changes
 
+### 0.2.2 December 15, 2022
+- [Feature] Added support for a number of Gateway HttpRoute Extended Features including:
+  - Matches: `Path`, `Type`: `RegularExpression` where PCRE compatible regular expressions are supported
+  - Filters:
+    - `RequestRedirect`: New features include `Scheme`, `Hostname`, `Path`, `Port` and `StatusCode`.  `Path` can specify a `Type` of `ReplaceFullPath` (an absolute path) or `ReplacePrefixMatch` (a path which will add subdirectories), either of which can include PCRE regular expression replacement strings.
+    - `URLRewrite`: `Hostname` and `Path`.  `Hostname` can include a port and `Path` can specify a `Type` of `ReplaceFullPath` (an absolute path) or `ReplacePrefixMatch` (a path which will add subdirectories).
+- [Note] You can no longer use the released set of Gateway CRDs to run Gateway until the beta is released.  The Litespeed Ingress Controller uses the latest beta definitions and should be installed using the `./gateway-load.sh` in the samples package and unloaded with `./gateway-unload.sh`.
+
 ### 0.2.1 December 2, 2022
 - [Improvement] Support detecting the load of the Gateway CRDs after the controller is loaded.  However, Gateway CRDs should not be unloaded without unloading the controller.
 - [Improvement] Additional changes for Kubernetes Gateway v1beta1.
