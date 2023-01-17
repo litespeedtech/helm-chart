@@ -168,6 +168,12 @@ spec:
               hostPort: {{ .Values.containerPorts.https }}
               protocol: TCP
           {{- end }}
+          {{- if .Values.containerPorts.http3 }}
+            - name: http3
+              containerPort: {{ .Values.containerPorts.http3 }}
+              hostPort: {{ .Values.containerPorts.http3 }}
+              protocol: UDP
+          {{- end }}
           {{- if .Values.containerPorts.config }}
             - name: config
               containerPort: {{ .Values.containerPorts.config }}

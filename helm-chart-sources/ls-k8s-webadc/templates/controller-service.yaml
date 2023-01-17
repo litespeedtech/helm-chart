@@ -71,7 +71,19 @@ spec:
       {{- else if eq .Values.service.type "ClusterIP" }}
       nodePort: null
       {{- end }}
+    {{- end }}
+    {{- if .Values.service.ports.http3 }}
+    - name: http3
+      port: {{ .Values.service.ports.http3 }}
+      protocol: UDP
+        # targetPort: {{ .Values.service.targetPorts.http3 }}
+      targetPort: {{ .Values.service.ports.http3 }}
+      {{- if and (or (eq .Values.service.type "NodePort") (eq .Values.service.type "LoadBalancer")) (not (empty .Values.service.nodePorts.http3)) }}
+      nodePort: {{ .Values.service.nodePorts.http3 }}
+      {{- else if eq .Values.service.type "ClusterIP" }}
+      nodePort: null
       {{- end }}
+    {{- end }}
     {{- if .Values.service.ports.config }}
     - name: config
       port: {{ .Values.service.ports.config }}

@@ -480,6 +480,13 @@ You may see errors accessing service nodes if you just delete the service and at
 
 ## Notable changes
 
+### 0.2.3 January 17, 2023
+- [Feature] HTTP/3 support.  To enable it you must specify in helm `--set options service.ports.http3=443,service.targetPorts.http3=443,containerPorts.http3=443`.
+- [Feature] Gateway support extended feature in HTTPRoute, `spec.route.method` which supports matching HTTP method (GET, POST, etc.).
+- [Update] Updated all code to operate correctly in the 0.6.0 beta environment.
+- [BugFix] Gateway URLRewrite is properly applied.
+- [BugFix] Detect when small change between selections results in incorrect worker applied.
+
 ### 0.2.2 December 15, 2022
 - [Feature] Added support for a number of Gateway HttpRoute Extended Features including:
   - Matches: `Path`, `Type`: `RegularExpression` where PCRE compatible regular expressions are supported

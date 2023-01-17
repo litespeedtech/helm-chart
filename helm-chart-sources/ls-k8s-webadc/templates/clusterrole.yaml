@@ -50,6 +50,8 @@ rules:
       - list
       - update
       - watch
+      - delete
+      - create
   - apiGroups:
       - extensions
       - "networking.k8s.io"

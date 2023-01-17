@@ -45,7 +45,7 @@ extraDeploy: []
 image:
   registry: docker.io
   repository: litespeedtech/ls-k8
-  tag: "0.2.2"
+  tag: "0.2.3"
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -64,6 +64,7 @@ image:
 containerPorts:
   http: 80
   https: 443
+##  http3: 443
 ##  config: 7090
 ## @param logLevel The verbosity logging level.
 ## default is 2, 4 or higher does debugging or tracing
@@ -136,6 +137,7 @@ daemonset:
   hostPorts:
     http: 80
     https: 443
+##    http3: 443
 ##    config: 7090
 ##    prometheus: 9090
 ##    prometheus_exporter: 9936
@@ -396,7 +398,7 @@ defaultBackend:
   image:
     registry: docker.io
     repository: litespeedtech/ols-backend
-    tag: "0.2.2"
+    tag: "0.2.3"
     ## Specify a imagePullPolicy
     ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
     ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -600,13 +602,15 @@ service:
   ports:
     http: 80
     https: 443
-    ##config: 7090
+    ## http3: 443
+    ## config: 7090
   ## @param service.targetPorts [object] Map the controller service HTTP/HTTPS port
   ##
   targetPorts:
     http: http
     https: https
-    ##config: 7090
+    ## http3: http3
+    ## config: 7090
   ## @param service.nodePorts [object] Specify the nodePort value(s) for the LoadBalancer and NodePort service types.
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
   ##

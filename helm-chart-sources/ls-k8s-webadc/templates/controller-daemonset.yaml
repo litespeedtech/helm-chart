@@ -166,6 +166,14 @@ spec:
               hostPort: {{ .Values.daemonset.hostPorts.https }}
               {{- end }}
           {{- end }}
+          {{- if .Values.containerPorts.http3 }}
+            - name: http3
+              containerPort: {{ .Values.containerPorts.http3 }}
+              protocol: TCP
+              {{- if $useHostPort }}
+              hostPort: {{ .Values.daemonset.hostPorts.http3 }}
+              {{- end }}
+          {{- end }}
           {{- if .Values.containerPorts.config }}
             - name: config
               containerPort: {{ .Values.containerPorts.config }}
