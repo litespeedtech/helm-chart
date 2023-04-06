@@ -480,6 +480,11 @@ You may see errors accessing service nodes if you just delete the service and at
 
 ## Notable changes
 
+### 0.2.4 April 6, 2023
+- [BugFix] Fix a memory violation when data is taken from cache and the server is quite busy.
+- [BugFix] Fix a memory leak processing SSL data.
+- [BugFix] Fix a small bug in handling mulitple headers with the same name.
+
 ### 0.2.3 January 17, 2023
 - [Feature] HTTP/3 support.  To enable it you must specify in helm `--set options service.ports.http3=443,service.targetPorts.http3=443,containerPorts.http3=443`.
 - [Feature] Gateway support extended feature in HTTPRoute, `spec.route.method` which supports matching HTTP method (GET, POST, etc.).
